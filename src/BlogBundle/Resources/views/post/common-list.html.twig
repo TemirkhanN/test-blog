@@ -1,0 +1,51 @@
+{% extends '@Blog/bootstrap.layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        .post-block {
+            margin-bottom: 10px;
+            border: 1px solid;
+        }
+
+        .post-block .pub-date {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .post-block .author {
+            color: green;
+        }
+
+        .post-block .post-title {
+            font-size: 18px;
+        }
+
+        .post-block .post-teaser {
+            padding: 0 10px 10px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+
+        <div class="row posts-list">
+            {% for post in posts %}
+                <div class="col-lg-12 post-block">
+                    <span class="pub-date">{{ post.pubDate|date('H:i:s d-m-Y') }}</span>
+                    <a class="author" href="{{ path('author_posts', {'authorId': post.author.id}) }}" title="Опубликовал {{ post.author.name }}">{{ post.author.name }}</a>
+
+                    <p class="post-title">{{ post.title }}</p>
+                    <div class="post-teaser">
+                        {{ post.teaser }}
+                    </div>
+                    <p><a href="{{ path('blog_post', {'postId' : post.id}) }}">Читать</a></p>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% include '@Blog/layer/pagination.html.twig' %}
+    </div>
+
+{% endblock %}

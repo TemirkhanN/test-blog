@@ -1,0 +1,17 @@
+{% if commentForm %}
+    {% block stylesheet %}
+        <style>
+            form[name=post] {
+                width: 50%;
+                margin: 20px auto 40px;
+            }
+        </style>
+    {% endblock %}
+
+    {% include '@Blog/layer/flash-errors.html.twig' %}
+
+    {{ form_start(commentForm) }}
+    {{ form_widget(commentForm) }}
+    {{ form_end(commentForm) }}
+
+{% endif %}

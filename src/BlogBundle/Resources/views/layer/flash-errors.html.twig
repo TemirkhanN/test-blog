@@ -1,0 +1,8 @@
+{% if app.session.flashbag.has('error') %}
+    <div class="alert alert-danger" role="alert">
+        {% for login_error in app.session.flashbag.get('error') %}
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            {{ login_error }}<br>
+        {% endfor %}
+    </div>
+{% endif %}

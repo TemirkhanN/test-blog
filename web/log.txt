@@ -1,0 +1,10 @@
+stdClass Object
+(
+    [var] => 123
+    [asdasdasd] => asdasdlbk;aqjd;kasd
+    [hahaha] => stdClass Object
+        (
+            [hooray] => 123213213213213asdfasd
+        )
+
+)

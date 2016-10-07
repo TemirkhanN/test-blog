@@ -1,0 +1,64 @@
+#Страница входа
+blog_login:
+    path: /login
+    defaults: {_controller: BlogBundle:User:login}
+
+#Страница выхода
+blog_logout:
+    path: /logout
+    defaults: {_controller: BlogBundle:User:logout}
+
+#Основая страница блога со списком публикаций
+blog_posts:
+    path: /{page}
+    defaults: {_controller: BlogBundle:Post:index, page: 1}
+    requirements:
+        page: \d+
+
+#Страница с публикациями автора
+author_posts:
+    path: /author-{authorId}/{page}
+    defaults: {_controller: BlogBundle:Post:getAuthorContents, page: 1}
+    requirements:
+        page: \d+
+        authorId: \d+
+
+#Страница с отдельной публикацией
+blog_post:
+    path: /post-{postId}
+    defaults: {_controller: BlogBundle:Post:getContent}
+    requirements:
+        postId: \d+
+
+#Страница добавления публикации
+add_post:
+    path: /post/add
+    defaults: {_controller: BlogBundle:Post:createContent}
+
+#Страница редактирования публикации
+edit_post:
+    path: /post-{postId}/edit
+    defaults: {_controller: BlogBundle:Post:updateContent}
+    requirements:
+        postId: \d+
+
+#Страница выноса публикаций из черновиков в опубликованные
+publish_post:
+    path: /post-{postId}/publish
+    defaults: {_controller: BlogBundle:Post:publishContent}
+    requirements:
+        postId: \d+
+
+#Страница удаления публикации
+delete_post:
+    path: /post-{postId}/delete
+    defaults: {_controller: BlogBundle:Post:deleteContent}
+    requirements:
+        postId: \d+
+
+#Страница добавления комментария к публикации
+add_comment:
+    path: /comment/add/post-{postId}
+    defaults: {_controller: BlogBundle:Comment:createComment}
+    requirements:
+        postId: \d+

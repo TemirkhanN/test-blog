@@ -1,0 +1,45 @@
+{% extends '@Blog/bootstrap.layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        a.author {
+            color: green;
+        }
+
+        .post-manipulation{
+            margin-top:20px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div id="content">
+            <p>{% if post.pubDate %}{{ post.pubDate|date('H:i:s d-m-Y') }}{% else %}{{ post.addDate|date('H:i:s d-m-Y') }}{% endif %}</p>
+            {% if not isOwner %}
+                <p>Автор: <a class="author" href="{{ path('author_posts', {'authorId': post.author.id}) }}" title="Опубликовал">{{ post.author.name }}</a></p>
+            {% endif %}
+            <h1>{{ post.title }}</h1>
+            {{ post.content|nl2br }}
+            <br>
+
+            {% if isOwner %}
+                <div class="post-manipulation">
+                    <a href="{{ path('edit_post', {'postId': post.id}) }}">Редактировать</a>
+                    {% if post.status == constant('BlogBundle\\Entity\\Post::STATUS_DRAFT') %}
+                        <br>
+                        <a style="color:green;" href="{{ path('publish_post', {'postId': post.id}) }}">Опубликовать</a><br>
+                        <a style="color:red;" href="{{ path('delete_post', {'postId': post.id}) }}">Удалить</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <hr>
+        <a href="{{ path('add_comment', {"postId":post.id}) }}">Добавить комментарий</a>
+        <br>
+        {% include '@Blog/comment/common-list.html.twig' with {'comments': post.comments} %}
+
+    </div>
+{% endblock %}

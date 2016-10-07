@@ -1,0 +1,51 @@
+{% extends '@Blog/bootstrap.layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        .post-block {
+            margin-bottom: 10px;
+            border: 1px solid;
+        }
+
+        .post-block .add-date {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .post-block .post-title {
+            font-size: 18px;
+        }
+
+        .post-block .post-teaser {
+            padding: 0 10px 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <div class="row posts-list">
+            {% if posts.count %}
+                {% for post in posts %}
+                    <div class="col-lg-12 post-block">
+                        <span class="add-date">{{ post.addDate|date('H:i:s d-m-Y') }}</span>
+                        <p class="post-title">{{ post.title }}</p>
+                        <div class="post-teaser">
+                            {{ post.teaser }}
+                        </div>
+                        <p><a href="{{ path('blog_post', {'postId' : post.id}) }}">Читать</a></p>
+                    </div>
+                    {% if post.status != constant('BlogBundle\\Entity\\Post::STATUS_PUBLISHED') %}
+                        <a href=""></a>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                У этого автора пока нет публикаций
+            {% endif %}
+        </div>
+
+        {% include '@Blog/layer/pagination.html.twig' %}
+    </div>
+
+{% endblock %}

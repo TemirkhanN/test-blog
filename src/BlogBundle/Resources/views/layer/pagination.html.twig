@@ -1,0 +1,30 @@
+{% if totalResults > onPage %}
+
+    {% set paginationParams = [] %}
+    {% set totalPages = (totalResults/onPage)|round(0, 'ceil') %}
+    {% if totalPages > 1 %}
+        {% set fromPage = currentPage - 5 > 0 ? currentPage - 5 : 1 %}
+        {% set toPage   = currentPage + 5 < totalPages ? currentPage + 5 : totalPages %}
+
+        <nav aria-label="Навигация">
+            <p>Навигация</p>
+            <ul class="pagination">
+                {% for i in fromPage..toPage %}
+                    {% if i == currentPage %}
+                        <li class="active">
+                            <a href="javascript:void(0)">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path(app.request.attributes.get('_route'), paginationParams|merge(app.request.attributes.get('_route_params'))|merge(app.request.query.all)|merge({'page': i})) }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if totalPages > toPage %}
+                    <li class="disabled"><a>...</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+{% endif %}

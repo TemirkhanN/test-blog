@@ -1,0 +1,20 @@
+{% extends '@Blog/bootstrap.layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        form[name=post]{
+            width:50%;
+            margin:20px auto 40px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    {% include '@Blog/layer/flash-errors.html.twig' %}
+
+    {{ form_start(postForm) }}
+    {{ form_widget(postForm) }}
+    {{ form_end(postForm) }}
+
+{% endblock %}

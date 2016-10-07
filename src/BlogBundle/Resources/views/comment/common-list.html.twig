@@ -1,0 +1,46 @@
+{% extends '@Blog/bootstrap.layout.html.twig' %}
+
+{% block stylesheet %}
+    <style>
+        form[name=post] {
+            width: 50%;
+            margin: 20px auto 40px;
+        }
+
+        #comments{
+            border:1px dashed gray;
+            padding:10px 20px;
+        }
+
+        .comment{
+            border-bottom:1px solid;
+            margin-bottom:5px;
+        }
+
+        .comment .author{
+            color:gray;
+        }
+
+        .comment .content{
+            font-size:13px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <p>Комментарии</p>
+    <div id="comments">
+        {% if comments.count %}
+            {% for comment in comments %}
+                <div class="comment">
+                    <p class="author">{{ comment.author.name }} написал в {{ comment.pubDate|date('H:i d-m-Y') }}</p>
+                    <p class="content">{{ comment.content|nl2br }}</p>
+                </div>
+            {% endfor %}
+
+        {% else %}
+            <p>Комментариев пока нет</p>
+        {% endif %}
+    </div>
+{% endblock %}
