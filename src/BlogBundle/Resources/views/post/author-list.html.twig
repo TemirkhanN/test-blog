@@ -1,6 +1,9 @@
 {% extends '@Blog/bootstrap.layout.html.twig' %}
 
+{% block title %}Публикации автора "{{ author.name }}"{% endblock %}
+
 {% block stylesheet %}
+    {{ parent() }}
     <style>
         .post-block {
             margin-bottom: 10px;

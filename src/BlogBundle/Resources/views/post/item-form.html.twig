@@ -1,6 +1,7 @@
 {% extends '@Blog/bootstrap.layout.html.twig' %}
-
+{% block title %}{% if existingItem is defined %}Редактирование публикации{% else %}Добавление публикации{% endif %}{% endblock %}
 {% block stylesheet %}
+    {{ parent() }}
     <style>
         form[name=post]{
             width:50%;

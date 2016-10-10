@@ -1,6 +1,9 @@
 {% extends '@Blog/bootstrap.layout.html.twig' %}
 
+{% block title %}Список публикаций{% endblock %}
+
 {% block stylesheet %}
+    {{ parent() }}
     <style>
         .post-block {
             margin-bottom: 10px;

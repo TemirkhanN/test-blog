@@ -1,6 +1,9 @@
 {% extends '@Blog/bootstrap.layout.html.twig' %}
 
+{% block title %}{{ post.title }}{% endblock %}
+
 {% block stylesheet %}
+    {{ parent() }}
     <style>
         a.author {
             color: green;
@@ -44,6 +47,5 @@
         {% endif %}
         <br>
         {% include '@Blog/comment/common-list.html.twig' with {'comments': post.comments} %}
-
     </div>
 {% endblock %}

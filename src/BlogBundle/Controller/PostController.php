@@ -55,10 +55,16 @@ class PostController extends Controller
      * @param Request $request
      *
      * @return Response
+     * @throws NotFoundHttpException
      */
     public function getAuthorContentsAction($authorId, $page, Request $request)
     {
         $onPage = $request->query->get('onPage') ?: 5; // Если вдруг понадобится ограничить вывод на страницу другим числом
+
+        $author = $this->getDoctrine()->getRepository('BlogBundle:User')->find($authorId);
+        if (!$author) {
+            throw $this->createNotFoundException();
+        }
 
         $criteria = [
             'author' => $authorId,
@@ -78,6 +84,7 @@ class PostController extends Controller
         $posts = $this->getDoctrine()->getRepository('BlogBundle:Post')->getPosts($criteria, $page, $onPage, 'addDate', 'DESC');
 
         return $this->render('BlogBundle:post:author-list.html.twig', [
+            'author'       => $author,
             'posts'        => $posts,
             'onPage'       => $onPage,
             'currentPage'  => $page,
@@ -129,7 +136,7 @@ class PostController extends Controller
         }
 
         return $this->render('BlogBundle:post:item-form.html.twig', [
-            'postForm' => $postForm->createView()
+            'postForm' => $postForm->createView(),
         ]);
     }
 
@@ -216,7 +223,8 @@ class PostController extends Controller
         }
 
         return $this->render('BlogBundle:post:item-form.html.twig', [
-            'postForm' => $postForm->createView()
+            'postForm'      => $postForm->createView(),
+            'existingItem'  => true
         ]);
     }
 
@@ -257,7 +265,7 @@ class PostController extends Controller
     /**
      * Удаление публикации
      *
-     * @param int     $postId
+     * @param int $postId
      *
      * @return Response|RedirectResponse
      */

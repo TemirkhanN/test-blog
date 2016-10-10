@@ -1,6 +1,10 @@
 {% extends "@Blog/bootstrap.layout.html.twig" %}
 
+{% block title %}Авторизация{% endblock %}
+
 {% block stylesheet %}
+    {{ parent() }}
+
     <style>
         body {
             padding-bottom: 40px;
@@ -52,7 +56,6 @@
 
 
 {% block body %}
-
     {% include "@Blog/layer/flash-errors.html.twig" %}
 
     {{ form_start(login_form) }}
