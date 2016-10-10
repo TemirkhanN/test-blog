@@ -8,6 +8,11 @@ blog_logout:
     path: /logout
     defaults: {_controller: BlogBundle:User:logout}
 
+#Для системных операций
+#blog_create_user:
+#    path: /create_user
+#    defaults: {_controller:BlogBundle:User:createUser}
+
 #Основая страница блога со списком публикаций
 blog_posts:
     path: /{page}

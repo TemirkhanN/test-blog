@@ -6,9 +6,9 @@ use BlogBundle\Entity\User;
 use BlogBundle\Form\LoginType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -25,20 +25,21 @@ class UserController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
+     * @return RedirectResponse|Response
      */
     public function loginAction(Request $request)
     {
         $session = new Session();
-        //Если пользователь уже авторизован, перебрасываем его на главную страницу
+        //Перенаправление пользователя. Явное-передан ?returnTo. По-умолчанию - главная страница блога)
+        $returnTo = $request->query->get('returnTo') ? : $this->generateUrl('blog_posts');
+
+        //Если пользователь уже авторизован, перебрасываем его на главную страницу блога
         if ($session->get('user_info')) {
-            return $this->redirect($this->generateUrl('blog_posts'));
+            return $this->redirect($returnTo);
         }
 
         $user = new User();
-
         $loginForm = $this->createForm(LoginType::class, $user);
-
         $loginForm->handleRequest($request);
 
         if ($loginForm->isSubmitted() && $loginForm->isValid()) {
@@ -52,10 +53,9 @@ class UserController extends Controller
             if ($dbUser && password_verify($user->getPassword(), $dbUser->getPassword())) {
                 $dbUser->setLastSigned(new \DateTime());
                 $this->getDoctrine()->getManager()->flush();
-
                 $session->set('user_info', $dbUser);
 
-                return $this->redirect($this->generateUrl('blog_posts'));
+                return $this->redirect($returnTo);
             }
 
             $session->getFlashBag()->add('error', 'Пользователя с такими данными не существует');
@@ -66,19 +66,24 @@ class UserController extends Controller
 
     /**
      * Выход из системы
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
-    public function logoutAction()
+    public function logoutAction(Request $request)
     {
         //Все проверки на уже авторизованного пользователя в контексте задачи не имеют смысла. Сносим данные и редиректим
         (new Session())->remove('user_info');
+        $returnTo = $request->query->get('returnTo') ? : $this->generateUrl('blog_posts');
 
-        return $this->redirect($this->generateUrl('blog_posts'));
+        return $this->redirect($returnTo);
     }
 
     /**
      * Просто для "быстрого" создания пользователя
      *
-     * @Route("/create_user")
+     * @return Response
      */
     public function createUserAction()
     {

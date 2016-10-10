@@ -5,8 +5,12 @@ namespace BlogBundle\Controller;
 use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class CommentController
@@ -17,6 +21,13 @@ class CommentController extends Controller
 
     /**
      * Добавление комментария к публикации
+     *
+     * @param int $postId
+     * @param Request $request
+     *
+     * @return Response|RedirectResponse
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
      */
     public function createCommentAction($postId, Request $request)
     {
@@ -39,7 +50,7 @@ class CommentController extends Controller
             $author = $this->getDoctrine()->getRepository('BlogBundle:User')->find($session->get('user_info')->getId());
             $comment->setAuthor($author);
             $comment->setPubDate(new \DateTime());
-            $entityManager = $this->getDoctrine()->getEntityManager();
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
 
