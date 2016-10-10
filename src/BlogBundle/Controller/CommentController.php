@@ -5,7 +5,7 @@ namespace BlogBundle\Controller;
 use BlogBundle\Entity\Comment;
 use BlogBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -63,7 +63,6 @@ class CommentController extends Controller
         return $this->render('BlogBundle:comment:item-form.html.twig', [
             'commentForm' => $commentForm->createView()
         ]);
-
     }
 
 }
