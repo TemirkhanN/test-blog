@@ -2,26 +2,65 @@
 
 namespace BlogBundle\Controller;
 
-use BlogBundle\Entity\User;
 use BlogBundle\Form\LoginType;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use BlogBundle\Form\RegisterType;
+use BlogBundle\Service\AuthManager;
+use BlogBundle\Service\PostManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Class UserController
- * @package BlogBundle\Controller
+ * Контроллер для манипуляций с пользователем
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
+    /**
+     *
+     * @var Session
+     */
+    private $session;
+
+    /**
+     * @var AuthManager
+     */
+    private $authManager;
+
+    /**
+     * @var PostManager
+     */
+    private $postManager;
+
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    /**
+     * @param EngineInterface $engine
+     * @param AuthManager     $authManager
+     * @param PostManager     $postManager
+     * @param FormFactory     $formFactory
+     */
+    public function __construct(
+        EngineInterface $engine,
+        AuthManager $authManager,
+        PostManager $postManager,
+        FormFactory $formFactory
+    )
+    {
+        $this->session     = new Session();
+        $this->authManager = $authManager;
+        $this->postManager = $postManager;
+        $this->formFactory = $formFactory;
+        $this->setRenderer($engine);
+    }
 
     /**
      * Вход в систему
-     *
-     * TODO за "корректным" решением вернуться сюда http://symfony.com/doc/current/bundles/FOSUserBundle/index.html
      *
      * @param Request $request
      *
@@ -29,39 +68,28 @@ class UserController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $session = new Session();
         //Перенаправление пользователя. Явное-передан ?returnTo. По-умолчанию - главная страница блога)
-        $returnTo = $request->query->get('returnTo') ? : $this->generateUrl('blog_posts');
+        $returnTo = $request->query->get('returnTo') ?: $this->postManager->getPostsPageLink();
 
         //Если пользователь уже авторизован, перебрасываем его на главную страницу блога
-        if ($session->get('user_info')) {
-            return $this->redirect($returnTo);
+        if ($this->authManager->isAuthorized()) {
+            return $this->respondRedirect($returnTo);
         }
 
-        $user = new User();
-        $loginForm = $this->createForm(LoginType::class, $user);
+        $loginForm = $this->formFactory->create(LoginType::class);
         $loginForm->handleRequest($request);
 
         if ($loginForm->isSubmitted() && $loginForm->isValid()) {
-            $dbUser = $this
-                ->getDoctrine()
-                ->getRepository('BlogBundle:User')
-                ->findOneBy([
-                    'login' => $user->getLogin(),
-                ]);
-
-            if ($dbUser && password_verify($user->getPassword(), $dbUser->getPassword())) {
-                $dbUser->setLastSigned(new \DateTime());
-                $this->getDoctrine()->getManager()->flush();
-                $session->set('user_info', $dbUser);
-
-                return $this->redirect($returnTo);
+            if ($this->authManager->login($loginForm->getData())) {
+                return $this->respondRedirect($returnTo);
+            } else {
+                $this->session
+                    ->getFlashBag()
+                    ->add('error', 'Пользователя с такими данными не существует');
             }
-
-            $session->getFlashBag()->add('error', 'Пользователя с такими данными не существует');
         }
 
-        return $this->render('BlogBundle:user:login.html.twig', ['login_form' => $loginForm->createView()]);
+        return $this->respond('BlogBundle:user:login.html.twig', ['login_form' => $loginForm->createView()]);
     }
 
     /**
@@ -71,41 +99,36 @@ class UserController extends Controller
      *
      * @return RedirectResponse
      */
-    public function logoutAction(Request $request)
+    public function logoutAction(Request $request): RedirectResponse
     {
-        //Все проверки на уже авторизованного пользователя в контексте задачи не имеют смысла. Сносим данные и редиректим
-        (new Session())->remove('user_info');
-        $returnTo = $request->query->get('returnTo') ? : $this->generateUrl('blog_posts');
+        $returnTo = $request->query->get('returnTo') ?: $this->postManager->getPostsPageLink();
 
-        return $this->redirect($returnTo);
+        $this->authManager->logout();
+
+        return $this->respondRedirect($returnTo);
     }
 
     /**
-     * Просто для "быстрого" создания пользователя
+     * @param Request $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function createUserAction()
+    public function registerAction(Request $request)
     {
-        $userLogin = 'James';
-        $userName  = 'Meo';
-        $userPass  = '123321';
-
-        $user = new User();
-        $user->setLogin($userLogin);
-        $user->setName($userName);
-        $user->setPassword(password_hash($userPass, PASSWORD_BCRYPT));
-        $user->setRegDate(new \DateTime());
-        $dcManager = $this->getDoctrine()->getManager();
-
-        $dcManager->persist($user);
-        try {
-            $dcManager->flush();
-        } catch (UniqueConstraintViolationException $e) {
-            return new Response('Пользователь с логином ' . $userLogin . ' уже существует');
+        //Если пользователь уже авторизован, перебрасываем его на главную страницу блога
+        if ($this->authManager->isAuthorized()) {
+            return $this->respondRedirect($this->postManager->getPostsPageLink());
         }
 
-        return new Response('Добавлен пользователь ' . $userLogin . ' с паролем ' . $userPass);
-    }
+        $form = $this->formFactory->create(RegisterType::class, null, ['validation_groups' => ['register']]);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->authManager->registerUser($form->getData());
+
+            return $this->respondRedirect($this->authManager->getLoginPageLink());
+        }
+
+        return $this->respond('BlogBundle:user:register.html.twig', ['register_form' => $form->createView()]);
+    }
 }

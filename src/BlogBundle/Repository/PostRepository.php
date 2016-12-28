@@ -3,66 +3,57 @@
 namespace BlogBundle\Repository;
 
 use BlogBundle\Entity\Post;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Util\Debug;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-/**
- * Class PostRepository
- * @package BlogBundle\Repository
- */
-class PostRepository extends \Doctrine\ORM\EntityRepository
+class PostRepository extends EntityRepository
 {
+    /**
+     * @param Post $post
+     */
+    public function savePost(Post $post)
+    {
+        $this->getEntityManager()->persist($post);
+        $this->getEntityManager()->flush($post);
+    }
 
     /**
      * Возвращает пост по идентификатору вместе с данными о авторе поста
      *
      * @param int $postId
+     *
      * @return Post|null
      */
-    public function getPost($postId)
+    public function getPost(int $postId)
     {
-        if ($postId < 0) {
-            return null;
-        }
-
         return $this
-            ->getEntityManager()
-            ->createQuery('SELECT p, a FROM BlogBundle:Post p JOIN p.author a WHERE p.id=:id')
+            ->createQueryBuilder('postRepository', 'pr')
+            ->join('postRepository.author', 'author')
+            ->where('postRepository.id = :id')
             ->setParameter('id', $postId)
             ->setMaxResults(1)
+            ->getQuery()
             ->getOneOrNullResult();
     }
-
 
     /**
      * Возвращает список всех постов по простым условиям
      *
-     * @param array $criteria
-     * @param int $page
-     * @param int $onPage
-     * @param string $orderBy
-     * @param string $orderDirection
+     * @param Criteria $criteria
      *
      * @return Paginator
      */
-    public function getPosts($criteria, $page, $onPage, $orderBy = 'pubDate', $orderDirection = 'DESC')
+    public function getPosts(Criteria $criteria): Paginator
     {
-        $page   = $page > 1 ? (int)$page : 1;
-        $onPage = $onPage > 1 ? (int)$onPage : 10;
-        $offset = ($page - 1) * $onPage;
-
-        $conditions = [];
-
-        foreach($criteria as $column => $value){
-            $conditions[] = 'p.' . $column .'= :' . $column;
-        }
-
         $query = $this
-            ->getEntityManager()
-            ->createQuery('SELECT p, a FROM BlogBundle:Post p JOIN p.author a WHERE ' . implode(' AND ', $conditions) . ' ORDER BY p.' . $orderBy . ' ' . $orderDirection)
-            ->setParameters($criteria)
-            ->setMaxResults($onPage)
-            ->setFirstResult($offset);
+            ->createQueryBuilder('postRepository')
+            ->select('postRepository')
+            ->addCriteria($criteria)
+            ->leftJoin('postRepository.author', 'author')
+            ->getQuery();
 
-        return new Paginator($query);
+        return new Paginator($query, true);
     }
 }

@@ -4,13 +4,15 @@ namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DbAssert;
 
 /**
  * Class User
  * @package BlogBundle\Entity
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BlogBundle\Repository\UserRepository")
  * @ORM\Table(name="`user`")
+ * @DbAssert\UniqueEntity("login")
  */
 class User
 {
@@ -22,8 +24,13 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
-     * @Assert\Length(min=3, max=50)
+     * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\Length(min=3, max=25, groups={"login", "register"})
+     * @Assert\Regex(
+     *     pattern="/^[a-z0-9_-]{3,25}$/i",
+     *     message="Логин содержит недопустимые символы",
+     *     groups={"register"}
+     * )
      *
      */
     private $login;
@@ -32,7 +39,8 @@ class User
      * @ORM\Column(type="string", length=60)
      * @Assert\Length(
      *     min=6,
-     *     minMessage="Пароль не может быть короче 6 символов"
+     *     minMessage="Пароль не может быть короче 6 символов",
+     *     groups={"login", "register"}
      * )
      */
     private $password;
@@ -40,6 +48,8 @@ class User
 
     /**
      * @ORM\Column(type="string", name="`name`", length=50, nullable=true)
+     * @Assert\NotBlank(message="Не указано имя пользователя", groups={"register"})
+     * @Assert\Length(max="50", maxMessage="Максимальная длина имени 50 символов", groups={"register"})
      */
     private $name;
 
@@ -56,7 +66,7 @@ class User
     /**
      * Get id
      *
-     * @return integer
+     * @return null|int
      */
     public function getId()
     {

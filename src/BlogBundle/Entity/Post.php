@@ -3,6 +3,7 @@
 namespace BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -12,16 +13,20 @@ use BlogBundle\Repository\PostRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Post
- * @package BlogBundle\Entity
- *
  * @ORM\Entity(repositoryClass="BlogBundle\Repository\PostRepository")
  * @ORM\Table(name="post", indexes={@Index(name="author_id_index", columns={"author_id"})})
  */
 class Post
 {
-    const STATUS_DRAFT = 0;
-    const STATUS_PUBLISHED = 1;
+    /**
+     * Статус публикации в черновике
+     */
+    const STATUS_DRAFT     = 'draft';
+
+    /**
+     * Статус опубликованной публикации
+     */
+    const STATUS_PUBLISHED = 'published';
 
     /**
      * @ORM\Id
@@ -71,9 +76,9 @@ class Post
     private $content;
 
     /**
-     * @ORM\Column(name="`status`", type="integer", options={"default":1})
+     * @ORM\Column(name="`status`", type="string", length=10)
      * @Assert\Choice(
-     *     choices  = {0, 1},
+     *     choices  = {Post::STATUS_DRAFT, Post::STATUS_PUBLISHED},
      *     message = "Недопустимый статус публикации"
      * )
      */
@@ -273,7 +278,7 @@ class Post
     /**
      * Get author
      *
-     * @return \BlogBundle\Entity\User
+     * @return User
      */
     public function getAuthor()
     {
@@ -283,11 +288,11 @@ class Post
     /**
      * Add comment
      *
-     * @param \BlogBundle\Entity\Comment $comment
+     * @param Comment $comment
      *
      * @return Post
      */
-    public function addComment(\BlogBundle\Entity\Comment $comment)
+    public function addComment(Comment $comment)
     {
         $this->comments[] = $comment;
 
@@ -297,9 +302,9 @@ class Post
     /**
      * Remove comment
      *
-     * @param \BlogBundle\Entity\Comment $comment
+     * @param Comment $comment
      */
-    public function removeComment(\BlogBundle\Entity\Comment $comment)
+    public function removeComment(Comment $comment)
     {
         $this->comments->removeElement($comment);
     }
@@ -307,7 +312,7 @@ class Post
     /**
      * Get comments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getComments()
     {

@@ -5,93 +5,146 @@ namespace BlogBundle\Controller;
 use BlogBundle\Entity\Post;
 use BlogBundle\Entity\User;
 use BlogBundle\Form\PostType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use BlogBundle\Service\AuthManager;
+use BlogBundle\Service\PostManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Class PostController
- * @package BlogBundle\Controller
+ * Контроллер для манипуляций с публикациями
  */
-class PostController extends Controller
+class PostController extends AbstractController
 {
+    /**
+     * Сервис публикаций
+     *
+     * @var PostManager
+     */
+    private $postManager;
 
     /**
-     * Список всех опубликованных публикаций
+     * Сервис авторизации
      *
-     * @param int     $page
-     * @param Request $request
+     * @var AuthManager
+     */
+    private $authManager;
+
+    /**
+     * Фабрика форм
+     *
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    /**
+     * Конструктор
+     *
+     * @param EngineInterface $engine
+     * @param PostManager     $postManager
+     * @param AuthManager     $authManager
+     * @param FormFactory     $formFactory
+     */
+    public function __construct(
+        EngineInterface $engine,
+        PostManager $postManager,
+        AuthManager $authManager,
+        FormFactory $formFactory
+    )
+    {
+        $this->setRenderer($engine);
+        $this->postManager = $postManager;
+        $this->authManager = $authManager;
+        $this->formFactory = $formFactory;
+    }
+
+    /**
+     * Список всех опубликованных записей
+     *
+     * @param int $page
+     * @param int $onPage
      *
      * @return Response
-     * @throws NotFoundHttpException
      */
-    public function indexAction($page, Request $request)
+    public function indexAction(int $page, int $onPage): Response
     {
-        $onPage = $request->query->get('onPage') ?: 5; // Если вдруг понадобится ограничить вывод на страницу другим числом
+        $posts = $this->postManager->getPosts($page, $onPage);
 
-        $posts = $this->getDoctrine()->getRepository('BlogBundle:Post')->getPosts(['status' => Post::STATUS_PUBLISHED], $page, $onPage);
         if ($posts->count() === 0) {
-            throw $this->createNotFoundException();
+            return $this->respondNotFound('Публикации не найдены');
         }
 
-        return $this->render('BlogBundle:post:common-list.html.twig', [
-            'posts'        => $posts,
-            'onPage'       => $onPage,
-            'currentPage'  => $page,
-            'totalResults' => $posts->count()
-        ]);
+        return $this->respond(
+            'BlogBundle:post:common-list.html.twig',
+            [
+                'posts'       => $posts,
+                'onPage'      => $onPage,
+                'currentPage' => $page,
+                'total'       => $posts->count(),
+            ]
+        );
     }
 
 
     /**
      * Список всех публикаций пользователя
      *
-     * @param int     $authorId
-     * @param int     $page
-     * @param Request $request
+     * @param User $author
+     * @param int  $page
+     * @param int  $onPage
      *
      * @return Response
-     * @throws NotFoundHttpException
      */
-    public function getAuthorContentsAction($authorId, $page, Request $request)
+    public function getAuthorContentsAction(User $author, int $page, int $onPage)
     {
-        $onPage = $request->query->get('onPage') ?: 5; // Если вдруг понадобится ограничить вывод на страницу другим числом
+        $user = $this->authManager->getUser();
 
-        $author = $this->getDoctrine()->getRepository('BlogBundle:User')->find($authorId);
-        if (!$author) {
-            throw $this->createNotFoundException();
+        if ($user->getId() === $author->getId()){
+            $posts = $this->postManager->getPostsByAuthor($author, $page, $onPage);
+        } else {
+            $posts = $this->postManager->getPublishedPostsByAuthor($author, $page, $onPage);
         }
 
-        $criteria = [
-            'author' => $authorId,
-            'status' => Post::STATUS_PUBLISHED
-        ];
-
-        $session = new Session();
-        if ($session->has('user_info')) {
-            $user = $session->get('user_info');
-
-            //Для самого автора, который просматривает список собственных публикаций, снимаем ограничение на статус публикации
-            if ($user->getId() === $authorId) {
-                unset($criteria['status']);
-            }
-        }
-
-        $posts = $this->getDoctrine()->getRepository('BlogBundle:Post')->getPosts($criteria, $page, $onPage, 'addDate', 'DESC');
-
-        return $this->render('BlogBundle:post:author-list.html.twig', [
-            'author'       => $author,
-            'posts'        => $posts,
-            'onPage'       => $onPage,
-            'currentPage'  => $page,
-            'totalResults' => $posts->count()
-        ]);
+        return $this->respond(
+            'BlogBundle:post:author-list.html.twig',
+            [
+                'author'      => $author,
+                'posts'       => $posts,
+                'onPage'      => $onPage,
+                'currentPage' => $page,
+                'total'       => $posts->count(),
+            ]
+        );
     }
 
+    /**
+     * Просмотр публикации
+     *
+     * @param Post $post
+     *
+     * @Extra\Security("is_granted('view', post)")
+     *
+     * @return Response
+     */
+    public function getContentAction(Post $post)
+    {
+        $user    = $this->authManager->getUser();
+        $isOwner = $user && $user->getId() === $post->getAuthor()->getId();
+
+        //Если публикация не опубликована,проверяем, что ее просматривает владелец
+        if (!$isOwner && $post->getStatus() !== Post::STATUS_PUBLISHED) {
+            $this->respondNotFound('К сожалению, такой публикации не существует');
+        }
+
+        return $this->respond('BlogBundle:post:common-item.html.twig', [
+            'post'    => $post,
+            'is_owner' => $isOwner,
+        ]);
+    }
 
     /**
      * Добавление новой публикации
@@ -102,81 +155,27 @@ class PostController extends Controller
      */
     public function createContentAction(Request $request)
     {
-        $session = new Session();
-        if (!$session->has('user_info')) {
-            throw $this->createAccessDeniedException('Комментарии могут оставлять только авторизованные пользователи');
+        $author = $this->authManager->getUser();
+        if (!$author) {
+            return $this->respondAccessForbidden('Создавать публикации могут лишь авторизованные пользователи');
         }
 
-        $author = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('BlogBundle:User')
-            ->find($session->get('user_info')->getId());
-
-        $postForm = $this->createForm(PostType::class, new Post());
+        $postForm = $this->formFactory->create(PostType::class);
         $postForm->handleRequest($request);
 
         if ($postForm->isSubmitted() && $postForm->isValid()) {
-            $post = $postForm->getData();
-            $post->setAuthor($author);
-            $post->setAddDate(new \DateTime());
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();
+            $post = $this->postManager->addPost($postForm->getData(), $author);
 
             if ($post->getId()) {
-                return $this->redirect(
-                    $this->generateUrl('blog_post', [
-                        'postId' => $post->getId()
-                    ])
-                );
+                return new RedirectResponse($this->postManager->getPostPageLink($post));
             }
 
-            $session->getFlashBag()->set('error', 'Произошла ошибка при создании публикации');
+            (new Session())
+                ->getFlashBag()
+                ->set('error', 'Произошла ошибка при создании публикации');
         }
 
-        return $this->render('BlogBundle:post:item-form.html.twig', [
-            'postForm' => $postForm->createView(),
-        ]);
-    }
-
-    /**
-     * Просмотр публикации
-     *
-     * @param int $postId
-     *
-     * @return Response
-     */
-    public function getContentAction($postId)
-    {
-        if (($post = $this->getDoctrine()->getRepository('BlogBundle:Post')->getPost($postId)) === null) {
-            throw $this->createNotFoundException('К сожалению, такой публикации не существует');
-        }
-
-        /**
-         * @var User $user
-         * @var Post $post
-         */
-
-        $isOwner     = false;
-        $commentForm = null; //Форма комментирования для авторизованных пользователей
-
-        $session = new Session();
-        if ($session->has('user_info')) {
-            $user    = $session->get('user_info');
-            $isOwner = (int)$user->getId() === (int)$post->getAuthor()->getId();
-        }
-
-
-        //Если публикация не опубликована,проверяем, что ее просматривает владелец
-        if (!$isOwner && $post->getStatus() !== Post::STATUS_PUBLISHED) {
-            throw $this->createNotFoundException('К сожалению, такой публикации не существует');
-        }
-
-        return $this->render('BlogBundle:post:common-item.html.twig', [
-            'post'    => $post,
-            'isOwner' => $isOwner
-        ]);
+        return $this->respond('BlogBundle:post:item-form.html.twig', ['postForm' => $postForm->createView()]);
     }
 
     /**
@@ -186,8 +185,6 @@ class PostController extends Controller
      * @param Request $request
      *
      * @return Response
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedException
      */
     public function updateContentAction($postId, Request $request)
     {
@@ -196,12 +193,12 @@ class PostController extends Controller
          */
         $session = new Session();
         if (!$session->has('user_info')) {
-            throw $this->createAccessDeniedException('Редактирование доступно только авторизованным пользователям');
+            return $this->respondAccessForbidden('Редактирование доступно только авторизованным пользователям');
         }
         $user = $session->get('user_info');
         $post = $this->getDoctrine()->getRepository('BlogBundle:Post')->findOneBy(['id' => $postId, 'author' => $user]);
         if ($post === null) {
-            throw $this->createNotFoundException('К сожалению, такой публикации не существует');
+            return $this->respondNotFound('К сожалению, такой публикации не существует');
         }
 
         $postForm = $this->createForm(PostType::class, $post);
@@ -214,7 +211,7 @@ class PostController extends Controller
             if ($post->getId()) {
                 return $this->redirect(
                     $this->generateUrl('blog_post', [
-                        'postId' => $post->getId()
+                        'postId' => $post->getId(),
                     ])
                 );
             }
@@ -223,8 +220,8 @@ class PostController extends Controller
         }
 
         return $this->render('BlogBundle:post:item-form.html.twig', [
-            'postForm'      => $postForm->createView(),
-            'existingItem'  => true
+            'postForm'     => $postForm->createView(),
+            'existingItem' => true,
         ]);
     }
 

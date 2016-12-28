@@ -1,7 +1,7 @@
-{% if totalResults > onPage %}
+{% if total > onPage %}
 
     {% set paginationParams = [] %}
-    {% set totalPages = (totalResults/onPage)|round(0, 'ceil') %}
+    {% set totalPages = (total/onPage)|round(0, 'ceil') %}
     {% if totalPages > 1 %}
         {% set fromPage = currentPage - 5 > 0 ? currentPage - 5 : 1 %}
         {% set toPage   = currentPage + 5 < totalPages ? currentPage + 5 : totalPages %}

@@ -1,4 +1,58 @@
 services:
-#    blog.example:
-#        class: BlogBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    #repository Репозиторий для работы с постами
+    blog_bundle.repository.post:
+        class: BlogBundle\Repository\PostRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - BlogBundle\Entity\Post
+        public: false
+
+    #repository Репозиторий для работы с пользователями
+    blog_bundle.repository.user:
+        class: BlogBundle\Repository\UserRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - BlogBundle\Entity\User
+        public: false
+
+    #controller Контроллер для работы с постами
+    blog_bundle.controller.post:
+        class: BlogBundle\Controller\PostController
+        arguments:
+            - '@templating'
+            - '@blog_bundle.service.post_manager'
+            - '@blog_bundle.service.auth_manager'
+            - '@form.factory'
+
+    #controller Контроллер для работы с юзером
+    blog_bundle.controller.user:
+        class: BlogBundle\Controller\UserController
+        arguments:
+            - '@templating'
+            - '@blog_bundle.service.auth_manager'
+            - '@blog_bundle.service.post_manager'
+            - '@form.factory'
+
+    #service Сервис управления постами
+    blog_bundle.service.post_manager:
+        class: BlogBundle\Service\PostManager
+        arguments:
+            - '@blog_bundle.repository.post'
+            - '@blog_bundle.service.user_manager'
+            - '@router'
+
+    #service Сервис управления пользователями
+    blog_bundle.service.user_manager:
+        class: BlogBundle\Service\UserManager
+        arguments:
+            - '@request_stack'
+            - '@blog_bundle.repository.user'
+
+    #service Сервис управления авторизацией пользователя
+    blog_bundle.service.auth_manager:
+        class: BlogBundle\Service\AuthManager
+        arguments:
+            - '@request_stack'
+            - '@blog_bundle.service.user_manager'
+            - '@router'

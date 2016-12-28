@@ -1,69 +1,70 @@
+#Страница решистрации
+blog_register:
+    path: /register
+    defaults: { _controller: blog_bundle.controller.user:registerAction }
+
 #Страница входа
 blog_login:
     path: /login
-    defaults: {_controller: BlogBundle:User:login}
+    defaults: { _controller: blog_bundle.controller.user:loginAction }
 
 #Страница выхода
 blog_logout:
     path: /logout
-    defaults: {_controller: BlogBundle:User:logout}
-
-#Для системных операций
-#blog_create_user:
-#    path: /create_user
-#    defaults: {_controller:BlogBundle:User:createUser}
+    defaults: { _controller: blog_bundle.controller.user:logoutAction }
 
 #Основая страница блога со списком публикаций
 blog_posts:
     path: /{page}
-    defaults: {_controller: BlogBundle:Post:index, page: 1}
+    defaults: { _controller: blog_bundle.controller.post:indexAction, page: 1, onPage: 10 }
     requirements:
         page: \d+
 
 #Страница с публикациями автора
 author_posts:
-    path: /author-{authorId}/{page}
-    defaults: {_controller: BlogBundle:Post:getAuthorContents, page: 1}
+    path: /author-{author}/{page}
+    defaults: { _controller: blog_bundle.controller.post:getAuthorContentsAction, page: 1, onPage: 10 }
     requirements:
         page: \d+
-        authorId: \d+
+        author: \d+
+        onPage: \d+
 
 #Страница с отдельной публикацией
 blog_post:
-    path: /post-{postId}
-    defaults: {_controller: BlogBundle:Post:getContent}
+    path: /post-{post}
+    defaults: { _controller: blog_bundle.controller.post:getContentAction }
     requirements:
-        postId: \d+
+        post: \d+
 
 #Страница добавления публикации
 add_post:
     path: /post/add
-    defaults: {_controller: BlogBundle:Post:createContent}
+    defaults: { _controller: blog_bundle.controller.post:createContentAction }
 
 #Страница редактирования публикации
 edit_post:
     path: /post-{postId}/edit
-    defaults: {_controller: BlogBundle:Post:updateContent}
+    defaults: { _controller: blog_bundle.controller.post:updateContentAction }
     requirements:
         postId: \d+
 
 #Страница выноса публикаций из черновиков в опубликованные
 publish_post:
     path: /post-{postId}/publish
-    defaults: {_controller: BlogBundle:Post:publishContent}
+    defaults: { _controller: blog_bundle.controller.post:publishContentAction }
     requirements:
         postId: \d+
 
 #Страница удаления публикации
 delete_post:
     path: /post-{postId}/delete
-    defaults: {_controller: BlogBundle:Post:deleteContent}
+    defaults: { _controller: blog_bundle.controller.post:deleteContentAction }
     requirements:
         postId: \d+
 
 #Страница добавления комментария к публикации
 add_comment:
     path: /comment/add/post-{postId}
-    defaults: {_controller: BlogBundle:Comment:createComment}
+    defaults: { _controller: BlogBundle:Comment:createComment }
     requirements:
         postId: \d+

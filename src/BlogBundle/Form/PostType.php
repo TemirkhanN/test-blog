@@ -43,7 +43,9 @@ class PostType extends AbstractType
             ])
             ->add('Сохранить', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'value' => 'Сохранить',
+                    'class' => 'btn btn-primary',
+                    'style' => 'margin-top:20px;',
                 ]
             ]);
     }
@@ -54,7 +56,7 @@ class PostType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'BlogBundle\Entity\Post'
+            'data_class' => Post::class,
         ]);
     }
 }

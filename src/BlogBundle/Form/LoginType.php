@@ -2,6 +2,7 @@
 
 namespace BlogBundle\Form;
 
+use BlogBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,19 +26,26 @@ class LoginType extends AbstractType
         $builder
             ->add('login', TextType::class, [
                 'label' => 'Логин',
-                'attr' => [
-                    'class' => 'form-control'
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
+                'validation_groups' => [
+                    'login',
                 ],
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Пароль',
-                'attr' => [
-                    'class' => 'form-control'
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
+                'validation_groups' => [
+                    'login',
                 ],
             ])
             ->add('Войти', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-lg btn-primary btn-block'
+                    'value' => 'Войти',
+                    'class' => 'btn btn-lg btn-success btn-block',
                 ],
             ]);
     }
@@ -48,7 +56,10 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'BlogBundle\Entity\User'
+            'data_class' => User::class,
+            'validation_groups' => [
+                'login',
+            ]
         ]);
     }
 

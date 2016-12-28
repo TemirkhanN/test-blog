@@ -8,12 +8,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: ru
-    doctrine_driver: pdo_pgsql
-    database_host: localhost
-    database_port: 5432
-    database_name: test_blog
-    database_user: postgres
-    database_password: postgre
 
 framework:
     #esi:             ~
@@ -47,7 +41,7 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   "%doctrine_driver%"
+        driver:   "%database_driver%"
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
