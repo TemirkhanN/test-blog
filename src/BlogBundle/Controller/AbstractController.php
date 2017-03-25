@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types = 1);
 
 namespace BlogBundle\Controller;
@@ -7,22 +8,31 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Абстрактный класс контроллера, оперирующего движком для рендеринга
+ */
 abstract class AbstractController
 {
     /**
+     * Движок
+     *
      * @var EngineInterface
      */
     private $renderer;
 
     /**
+     * Конструктор
+     *
      * @param EngineInterface $engine
      */
-    protected function setRenderer(EngineInterface $engine)
+    public function __construct(EngineInterface $engine)
     {
         $this->renderer = $engine;
     }
 
     /**
+     * Возвращает отрисованную страницу
+     *
      * @param string $template
      * @param array  $args
      *
@@ -34,7 +44,7 @@ abstract class AbstractController
     }
 
     /**
-     * Страница с сообщением о 404 ошибке
+     * Возвращает страницу с ошибкой 404
      *
      * @param string $message
      *
@@ -54,7 +64,7 @@ abstract class AbstractController
     }
 
     /**
-     * Страница с сообщением о ошибке доступа
+     * Возвращает страницу с ошибкой доступа
      *
      * @param string $message
      *
@@ -74,6 +84,8 @@ abstract class AbstractController
     }
 
     /**
+     * Создает перенаправление
+     *
      * @param string $link
      *
      * @return RedirectResponse
