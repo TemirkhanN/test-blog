@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace BlogBundle\Security;
 
-use BlogBundle\Entity\Post;
+use BlogBundle\Entity\Article;
 use Doctrine\Common\Util\Debug;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -29,7 +29,7 @@ class PostVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Post) {
+        if (!$subject instanceof Article) {
             return false;
         }
     }

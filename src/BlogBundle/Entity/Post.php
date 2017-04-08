@@ -2,211 +2,188 @@
 
 namespace BlogBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OrderBy;
-use BlogBundle\Repository\PostRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="BlogBundle\Repository\PostRepository")
+ * Публикация
+ *
  * @ORM\Table(name="post", indexes={@Index(name="author_id_index", columns={"author_id"})})
  */
 class Post
 {
-    /**
-     * Статус публикации в черновике
-     */
     const STATUS_DRAFT     = 'draft';
-
-    /**
-     * Статус опубликованной публикации
-     */
     const STATUS_PUBLISHED = 'published';
 
     /**
+     * Идентификатор
+     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned":true})
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private $id = 0;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * Автор
+     *
+     * @ManyToOne(targetEntity="Author")
      * @JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
 
     /**
+     * Заголовок
+     *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\Length(
-     *     min=10,
-     *     max=255,
-     *     minMessage="Заголовок должен быть не короче 10 символов",
-     *     maxMessage="Заголовок должен быть не длиннее 255 символов"
-     * )
      */
-    private $title;
+    private $title = '';
 
     /**
+     * Краткая аннотация
+     *
      * @ORM\Column(name="teaser", type="string", length=255)
-     * @Assert\Length(
-     *     min=10,
-     *     max=255,
-     *     minMessage="Тизер должен быть не короче 10 символов",
-     *     maxMessage="Тизер должен быть не длиннее 255 символов"
-     * )
-     * @Assert\NotBlank()
      */
-    private $teaser;
+    private $teaser = '';
 
     /**
+     * Текст публикации
+     *
      * @ORM\Column(type="text", length=3000)
-     * @Assert\Length(
-     *     min=10,
-     *     max=3000,
-     *     minMessage="Текст публикации должен быть не короче 10 символов",
-     *     maxMessage="Текст публикации  должен быть не длиннее 3000 символов"
-     * )
      */
-    private $content;
+    private $content = '';
 
     /**
+     * Статус
+     *
      * @ORM\Column(name="`status`", type="string", length=10)
-     * @Assert\Choice(
-     *     choices  = {Post::STATUS_DRAFT, Post::STATUS_PUBLISHED},
-     *     message = "Недопустимый статус публикации"
-     * )
      */
     private $status = self::STATUS_DRAFT;
 
     /**
+     * Дата добавления
+     *
      * @ORM\Column(name="add_date", type="datetime")
      */
     private $addDate;
 
     /**
+     * Дата опубликования
+     *
      * @ORM\Column(name="pub_date", type="datetime", nullable=true)
      */
     private $pubDate;
 
     /**
+     * Комментарии
+     *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
      * @OrderBy({"pubDate"="DESC"})
      */
     private $comments;
 
-
-    public function __construct()
+    /**
+     * Конструктор
+     *
+     * @param Author $author
+     */
+    public function __construct(Author $author)
     {
+        $this->addDate  = new DateTime();
+        $this->author   = $author;
         $this->comments = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Возвращает идентификатор
      *
-     * @return integer
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
 
     /**
-     * Set title
+     * Устанавливает заголовок
      *
      * @param string $title
-     *
-     * @return Post
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
-     * Get title
+     * Возвращает заголовок
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * Set content
+     * Устанавливает контект
      *
      * @param string $content
-     *
-     * @return Post
      */
     public function setContent($content)
     {
-        $this->content = strip_tags($content);
-
-        return $this;
+        $this->content = $content;
     }
 
     /**
-     * Get content
+     * Возвращает контект
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
     /**
-     * Set addDate
+     * Указывает дату создания
      *
-     * @param \DateTime $addDate
-     *
-     * @return Post
+     * @param DateTime $addDate
      */
-    public function setAddDate($addDate)
+    public function setAddDate(DateTime $addDate)
     {
         $this->addDate = $addDate;
-
-        return $this;
     }
 
     /**
-     * Get addDate
+     * Возвращает дату создания
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getAddDate()
+    public function getAddDate(): DateTime
     {
         return $this->addDate;
     }
 
     /**
-     * Set pubDate
+     * Устанавливает дату опубликования
      *
-     * @param \DateTime $pubDate
-     *
-     * @return Post
+     * @param DateTime $pubDate
      */
-    public function setPubDate($pubDate)
+    public function setPubDate(DateTime $pubDate)
     {
         $this->pubDate = $pubDate;
-
-        return $this;
     }
 
     /**
-     * Get pubDate
+     * Возвращает дату опубликования
      *
-     * @return \DateTime
+     * @return null|DateTime
      */
     public function getPubDate()
     {
@@ -214,108 +191,82 @@ class Post
     }
 
     /**
-     * Set teaser
+     * Устанавливает аннотацию
      *
      * @param string $teaser
-     *
-     * @return Post
      */
-    public function setTeaser($teaser)
+    public function setTeaser(string $teaser)
     {
-        $this->teaser = strip_tags($teaser);
-
-        return $this;
+        $this->teaser = $teaser;
     }
 
     /**
-     * Get teaser
+     * Возвращает аннотацию
      *
      * @return string
      */
-    public function getTeaser()
+    public function getTeaser(): string
     {
         return $this->teaser;
     }
 
     /**
-     * Set status
+     * Устанавливает статус
      *
      * @param string $status
-     *
-     * @return Post
      */
-    public function setStatus($status)
+    public function setStatus(string $status)
     {
         $this->status = $status;
-
-        return $this;
     }
 
     /**
-     * Get status
+     * Возвращает статус
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     /**
-     * Set author
+     * Возвращает автора
      *
-     * @param \BlogBundle\Entity\User $author
-     *
-     * @return Post
+     * @return Author
      */
-    public function setAuthor(\BlogBundle\Entity\User $author = null)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
-     * @return User
-     */
-    public function getAuthor()
+    public function getAuthor(): Author
     {
         return $this->author;
     }
 
     /**
-     * Add comment
+     * Добавляет комментарий
      *
      * @param Comment $comment
-     *
-     * @return Post
      */
     public function addComment(Comment $comment)
     {
-        $this->comments[] = $comment;
-
-        return $this;
+        $this->comments->add($comment);
     }
 
     /**
-     * Remove comment
+     * Удаляет комментарий
      *
      * @param Comment $comment
      */
-    public function removeComment(Comment $comment)
+    public function deleteComment(Comment $comment)
     {
         $this->comments->removeElement($comment);
     }
 
     /**
-     * Get comments
+     * Возвращает комментарии
      *
-     * @return Collection
+     * @return Comment[]
      */
-    public function getComments()
+    public function getComments(): array
     {
-        return $this->comments;
+        return $this->comments->toArray();
     }
 }

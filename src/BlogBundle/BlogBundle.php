@@ -1,15 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: temirkhan
- * Date: 05.10.16
- * Time: 10:14
- */
+
+declare(strict_types = 1);
 
 namespace BlogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Инициализатор модуля блога
+ */
 class BlogBundle extends Bundle
 {
 

@@ -3,15 +3,15 @@ blog_register:
     path: /register
     defaults: { _controller: blog_bundle.controller.user:registerAction }
 
-#Страница входа
-blog_login:
+# Страница входа
+blog.login:
     path: /login
-    defaults: { _controller: blog_bundle.controller.user:loginAction }
+    defaults: { _controller: blog.controller.login:login }
 
 #Страница выхода
 blog_logout:
     path: /logout
-    defaults: { _controller: blog_bundle.controller.user:logoutAction }
+    defaults: { _controller: blog_bundle.controller.logout:logout }
 
 #Основая страница блога со списком публикаций
 blog_posts:

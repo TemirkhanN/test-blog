@@ -43,7 +43,7 @@
         {% if app.session.has('user_info') %}
             <a href="{{ path('add_comment', {"postId":post.id}) }}">Добавить комментарий</a>
         {% else %}
-            <a href="{{ path('blog_login', {"returnTo": url('add_comment', {"postId":post.id})}) }}">Добавить комментарий</a>
+            <a href="{{ path('blog.login', {"returnTo": url('add_comment', {"postId":post.id})}) }}">Добавить комментарий</a>
         {% endif %}
         <br>
         {% include '@Blog/comment/common-list.html.twig' with {'comments': post.comments} %}

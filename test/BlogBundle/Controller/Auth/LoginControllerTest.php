@@ -2,10 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Temirkhan\UserBundle\Controller;
+namespace BlogBundle\Controller\Auth;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -25,6 +26,13 @@ class LoginControllerTest extends TestCase
      * @var MockObject|LoginServiceInterface
      */
     private $loginService;
+
+    /**
+     * Шаблонизатор
+     *
+     * @var MockObject|EngineInterface
+     */
+    private $engine;
 
     /**
      * Фабрика форм
@@ -47,9 +55,10 @@ class LoginControllerTest extends TestCase
     {
         parent::setUp();
 
+        $this->engine       = $this->createMock(EngineInterface::class);
         $this->formFactory  = $this->createMock(FormFactory::class);
         $this->loginService = $this->createMock(LoginServiceInterface::class);
-        $this->controller   = new LoginController($this->loginService, $this->formFactory);
+        $this->controller   = new LoginController($this->engine, $this->loginService, $this->formFactory);
     }
 
     /**
@@ -59,6 +68,7 @@ class LoginControllerTest extends TestCase
     {
         parent::tearDown();
 
+        $this->engine       = null;
         $this->formFactory  = null;
         $this->loginService = null;
         $this->controller   = null;
@@ -104,7 +114,7 @@ class LoginControllerTest extends TestCase
             ->with($this->equalTo($loginData))
             ->willReturn($response = $this->createMock(Response::class));
 
-        $this->assertSame($response, $this->controller->login($request));
+        $this->assertSame($response, $this->controller->execute($request));
     }
 
     /**

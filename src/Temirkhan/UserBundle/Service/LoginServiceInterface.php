@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Temirkhan\UserBundle\Service;
 
-use Symfony\Component\HttpFoundation\Response;
+use Temirkhan\UserBundle\ValueObject\LoginData;
 
 /**
  * Интерфейс сервиса входа в систему
@@ -14,9 +14,9 @@ interface LoginServiceInterface
     /**
      * Производит вход в систему
      *
-     * @param array $loginData
+     * @param LoginData $loginData
      *
-     * @return Response
+     * @return bool
      */
-    public function login(array $loginData): Response;
+    public function login(LoginData $loginData): bool;
 }

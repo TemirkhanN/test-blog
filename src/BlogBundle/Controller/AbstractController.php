@@ -7,6 +7,7 @@ namespace BlogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Абстрактный класс контроллера, оперирующего движком для рендеринга
@@ -93,5 +94,15 @@ abstract class AbstractController
     protected function respondRedirect(string $link): RedirectResponse
     {
         return new RedirectResponse($link);
+    }
+
+    /**
+     * Добавляет сообщение об ошибке во временную память
+     *
+     * @param string $error
+     */
+    protected function addFlashError(string $error)
+    {
+        (new Session())->getFlashBag()->add('error', $error);
     }
 }

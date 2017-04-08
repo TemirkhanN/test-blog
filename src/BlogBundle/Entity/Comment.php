@@ -2,16 +2,13 @@
 
 namespace BlogBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Index;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * Comment
+ * Комментарий
  *
- * @ORM\Entity(repositoryClass="BlogBundle\Repository\CommentRepository")
  * @ORM\Table(name="comment",
  *      indexes={
  *          @Index(name="pubdate_index", columns={"pub_date"}),
@@ -22,94 +19,92 @@ use Doctrine\ORM\Mapping\JoinColumn;
 class Comment
 {
     /**
+     * Идентификатор
+     *
      * @ORM\Column(type="integer", options={"unsigned":true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private $id = 0;
 
     /**
+     * Комментируемая публикация
+     *
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     private $post;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * Автор
+     *
+     * @ORM\ManyToOne(targetEntity="Author")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
 
 
     /**
+     * Текст комментария
+     *
      * @ORM\Column(name="content", type="text", length=3000)
-     * @Assert\Length(
-     *     min=5,
-     *     max=3000,
-     *     minMessage="Текст комментария не может быть короче 5 символов",
-     *     maxMessage="Текст комментария не может быть длиннее 3000 символов"
-     * )
      */
     private $content;
 
     /**
-     * @ORM\Column(name="pub_date", type="datetime")
+     * Дата добавления комментария
+     *
+     * @ORM\Column(name="add_date", type="datetime")
      */
-    private $pubDate;
-
+    private $addDate;
 
     /**
-     * Get id
+     * Конструктор
+     *
+     * @param Author $author
+     * @param Post   $article
+     */
+    public function __construct(Author $author, Post $article)
+    {
+        $this->post    = $article;
+        $this->author  = $author;
+        $this->addDate = new DateTime();
+    }
+
+    /**
+     * Возвращает идентификатор
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Set content
+     * Устанавливает текст комментария
      *
      * @param string $content
-     *
-     * @return Comment
      */
-    public function setContent($content)
+    public function setContent(string $content)
     {
         $this->content = $content;
-
-        return $this;
     }
 
     /**
-     * Get content
+     * Возвращает текст комментария
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
     /**
-     * Set post
+     * Возвращает комментируемый элемент
      *
-     * @param \BlogBundle\Entity\Post $post
-     *
-     * @return Comment
-     */
-    public function setPost(\BlogBundle\Entity\Post $post = null)
-    {
-        $this->post = $post;
-
-        return $this;
-    }
-
-    /**
-     * Get post
-     *
-     * @return \BlogBundle\Entity\Post
+     * @return Post
      */
     public function getPost()
     {
@@ -117,50 +112,36 @@ class Comment
     }
 
     /**
-     * Set author
+     * Возвращает автора
      *
-     * @param \BlogBundle\Entity\User $author
-     *
-     * @return Comment
+     * @return Author
      */
-    public function setAuthor(\BlogBundle\Entity\User $author = null)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
-     * @return \BlogBundle\Entity\User
-     */
-    public function getAuthor()
+    public function getAuthor(): Author
     {
         return $this->author;
     }
 
     /**
-     * Set pubDate
+     * Устанавливает дату добавления
      *
-     * @param \DateTime $pubDate
+     * @param DateTime $addDate
      *
      * @return Comment
      */
-    public function setPubDate($pubDate)
+    public function setAddDate(DateTime $addDate)
     {
-        $this->pubDate = $pubDate;
+        $this->addDate = $addDate;
 
         return $this;
     }
 
     /**
-     * Get pubDate
+     * Возвращает дату добавления
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPubDate()
+    public function getAddDate(): DateTime
     {
-        return $this->pubDate;
+        return $this->addDate;
     }
 }

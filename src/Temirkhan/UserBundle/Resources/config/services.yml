@@ -1,0 +1,12 @@
+services:
+    # Репозиторий пользователей
+    temirkhan.user.repository.user:
+        class: Temirkhan\UserBundle\Repository\UserRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    # Сервис входа в систему
+    temirkhan.user.service.login:
+        class: Temirkhan\UserBundle\Service\LoginService
+        arguments:
+            - '@temirkhan.user.repository.user'

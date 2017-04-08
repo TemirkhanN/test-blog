@@ -5,17 +5,21 @@ declare(strict_types = 1);
 namespace Temirkhan\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Temirkhan\UserBundle\ValueObject\LoginData;
 
 /**
  * Форма входа в систему
  */
-class LoginType extends AbstractType
+class LoginType extends AbstractType implements DataMapperInterface
 {
     /**
      * Инициализация формы
@@ -25,6 +29,8 @@ class LoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->setDataMapper($this);
+
         $builder->add('login', TextType::class, [
             'constraints' => [
                 new NotBlank(['message' => 'Логин пуст']),
@@ -42,6 +48,41 @@ class LoginType extends AbstractType
             ],
             'empty_data'  => '',
         ]);
+
+        $builder->add('submit', SubmitType::class, [
+            'label' => 'Войти',
+        ]);
+    }
+
+    /**
+     * Заполняет форму данными
+     *
+     * @param mixed                                   $data
+     * @param FormInterface[] $forms
+     */
+    public function mapDataToForms($data, $forms)
+    {
+        if (!$data) {
+            $data = new LoginData('', '');
+        }
+
+        $forms = iterator_to_array($forms);
+
+        $forms['login']->setData($data->getLogin());
+        $forms['password']->setData($data->getPassword());
+    }
+
+    /**
+     * Заполняет объект данными из формы
+     *
+     * @param \Symfony\Component\Form\FormInterface[] $forms
+     * @param mixed                                   $data
+     */
+    public function mapFormsToData($forms, &$data)
+    {
+        $forms = iterator_to_array($forms);
+
+        $data = new LoginData($forms['login']->getData(), $forms['password']->getData());
     }
 
     /**
@@ -52,7 +93,9 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'allow_extra_fields' => false,
+            'allow_extra_fields' => true,
+            'data_class'         => LoginData::class,
+            'empty_data'         => null,
             'error_bubbling'     => false,
         ]);
     }

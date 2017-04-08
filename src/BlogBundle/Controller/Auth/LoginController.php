@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Temirkhan\UserBundle\Controller;
+namespace BlogBundle\Controller\Auth;
 
+use BlogBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +15,7 @@ use Temirkhan\UserBundle\Service\LoginServiceInterface;
 /**
  * Контроллер входа в систему
  */
-class LoginController
+class LoginController extends AbstractController
 {
     /**
      * Сервис входа в систему
@@ -32,11 +34,14 @@ class LoginController
     /**
      * Конструктор
      *
+     * @param EngineInterface       $engine
      * @param LoginServiceInterface $loginService
      * @param FormFactory           $formFactory
      */
-    public function __construct(LoginServiceInterface $loginService, FormFactory $formFactory)
+    public function __construct(EngineInterface $engine, LoginServiceInterface $loginService, FormFactory $formFactory)
     {
+        parent::__construct($engine);
+
         $this->loginService = $loginService;
         $this->formFactory  = $formFactory;
     }
@@ -48,16 +53,20 @@ class LoginController
      *
      * @return Response
      */
-    public function login(Request $request): Response
+    public function execute(Request $request): Response
     {
         $loginForm = $this->formFactory->create(LoginType::class);
 
         $loginForm->handleRequest($request);
 
         if ($loginForm->isSubmitted() && $loginForm->isValid()) {
-            return $this->loginService->login($loginForm->getData());
+            if ($this->loginService->login($loginForm->getData())) {
+                return $this->respondRedirect('/blog');
+            }
+
+            $this->addFlashError('Пользователя с такими данными не существует');
         }
 
-        return new Response();
+        return $this->respond('@Blog/user/login.html.twig', ['login_form' => $loginForm->createView()]);
     }
 }
