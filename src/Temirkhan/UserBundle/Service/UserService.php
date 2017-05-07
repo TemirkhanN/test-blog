@@ -11,7 +11,7 @@ use Temirkhan\UserBundle\ValueObject\LoginData;
 /**
  * Сервис входа в систему
  */
-class LoginService implements LoginServiceInterface
+class UserService implements LoginServiceInterface, LogoutServiceInterface
 {
     /**
      * @var UserRepository
@@ -53,5 +53,13 @@ class LoginService implements LoginServiceInterface
         $session->save();
 
         return true;
+    }
+
+    /**
+     * Производит выход из системы
+     */
+    public function logout()
+    {
+
     }
 }

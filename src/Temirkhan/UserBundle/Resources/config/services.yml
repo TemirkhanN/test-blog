@@ -5,8 +5,8 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    # Сервис входа в систему
-    temirkhan.user.service.login:
-        class: Temirkhan\UserBundle\Service\LoginService
+    # Сервис пользователей
+    temirkhan.user.service.user:
+        class: Temirkhan\UserBundle\Service\UserService
         arguments:
             - '@temirkhan.user.repository.user'

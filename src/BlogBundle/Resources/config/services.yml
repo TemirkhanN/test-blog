@@ -1,4 +1,13 @@
 services:
+    # Контроллер создания публикаций
+    blog.controller.create_post:
+        class: BlogBundle\Controller\Post\CreateController
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - '@blog.service.post'
+            - '@router'
+
     # Контроллер входа в систему
     blog.controller.login:
         class: BlogBundle\Controller\Auth\LoginController
@@ -12,3 +21,15 @@ services:
         class: BlogBundle\Controller\Auth\LogoutController
         arguments:
             - '@templating'
+
+    # Репозиторий публикаций
+    blog.repository.post:
+        class: BlogBundle\Repository\PostRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    # Сервис публикаций
+    blog.service.post:
+        class: BlogBundle\Service\PostService
+        arguments:
+            - '@blog.repository.post'

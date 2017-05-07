@@ -2,9 +2,9 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_driver: pdo_mysql
+    database_driver: pdo_pgsql
     database_host: localhost
-    database_port: 3306
+    database_port: 5432
     database_name: blog
     database_user: root
     database_password: ~

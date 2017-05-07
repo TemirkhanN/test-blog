@@ -6,7 +6,7 @@ blog_register:
 # Страница входа
 blog.login:
     path: /login
-    defaults: { _controller: blog.controller.login:login }
+    defaults: { _controller: blog.controller.login:execute }
 
 #Страница выхода
 blog_logout:
@@ -18,53 +18,54 @@ blog_posts:
     path: /{page}
     defaults: { _controller: blog_bundle.controller.post:indexAction, page: 1, onPage: 10 }
     requirements:
-        page: \d+
+        page: '[1-9][0-9]*'
 
 #Страница с публикациями автора
 author_posts:
     path: /author-{author}/{page}
     defaults: { _controller: blog_bundle.controller.post:getAuthorContentsAction, page: 1, onPage: 10 }
     requirements:
-        page: \d+
-        author: \d+
-        onPage: \d+
+        page: '[1-9][0-9]*'
+        author: '[1-9][0-9]*'
+        onPage: '[1-9][0-9]*'
 
-#Страница с отдельной публикацией
+#Страница с публикацией
 blog_post:
-    path: /post-{post}
+    path: /posts/{post}
     defaults: { _controller: blog_bundle.controller.post:getContentAction }
     requirements:
-        post: \d+
+        post: '[1-9][0-9]*'
 
 #Страница добавления публикации
 add_post:
     path: /post/add
-    defaults: { _controller: blog_bundle.controller.post:createContentAction }
+    defaults: { _controller: blog.controller.create_post:execute }
+    methods: [POST, GET]
 
 #Страница редактирования публикации
 edit_post:
     path: /post-{postId}/edit
     defaults: { _controller: blog_bundle.controller.post:updateContentAction }
     requirements:
-        postId: \d+
+        postId: '[1-9][0-9]*'
 
 #Страница выноса публикаций из черновиков в опубликованные
 publish_post:
     path: /post-{postId}/publish
     defaults: { _controller: blog_bundle.controller.post:publishContentAction }
     requirements:
-        postId: \d+
+        postId: '[1-9][0-9]*'
 
 #Страница удаления публикации
 delete_post:
     path: /post-{postId}/delete
     defaults: { _controller: blog_bundle.controller.post:deleteContentAction }
     requirements:
-        postId: \d+
+        postId: '[1-9][0-9]*'
 
 #Страница добавления комментария к публикации
 add_comment:
     path: /comment/add/post-{postId}
     defaults: { _controller: BlogBundle:Comment:createComment }
     requirements:
-        postId: \d+
+        postId: '[1-9][0-9]*'
