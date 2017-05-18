@@ -9,11 +9,6 @@ imports:
 parameters:
     locale: ru
     doctrine_driver: pdo_pgsql
-    database_host: localhost
-    database_port: 5432
-    database_name: test_blog
-    database_user: postgres
-    database_password: postgre
 
 framework:
     #esi:             ~
