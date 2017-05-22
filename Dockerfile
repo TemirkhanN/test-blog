@@ -30,5 +30,3 @@ COPY . ./
 
 RUN composer install --prefer-source --no-interaction && \
     chown -R www-data:www-data /var/www/html
-
-EXPOSE 80

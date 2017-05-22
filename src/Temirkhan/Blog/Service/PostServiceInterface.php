@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace BlogBundle\Service;
+namespace Temirkhan\Blog\Service;
 
-use BlogBundle\Entity\Post;
+use Temirkhan\Blog\Entity\PostInterface;
 
 /**
  * Интерфейс сервиса публикаций
@@ -14,9 +14,7 @@ interface PostServiceInterface
     /**
      * Добавляет публикацию
      *
-     * @param Post $post
-     *
-     * @return Post
+     * @param PostInterface $post
      */
-    public function add(Post $post): Post;
+    public function add(PostInterface $post);
 }

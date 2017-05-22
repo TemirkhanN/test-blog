@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Temirkhan\Blog\Entity\AuthorInterface;
 use Temirkhan\UserBundle\Entity\User;
 
 /**
@@ -12,7 +13,7 @@ use Temirkhan\UserBundle\Entity\User;
  *
  * @ORM\Entity
  */
-class Author
+class Author implements AuthorInterface
 {
     /**
      * Идентификатор

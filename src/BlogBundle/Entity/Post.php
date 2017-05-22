@@ -9,13 +9,14 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OrderBy;
+use Temirkhan\Blog\Entity\PostInterface;
 
 /**
  * Публикация
  *
  * @ORM\Table(name="post", indexes={@Index(name="author_id_index", columns={"author_id"})})
  */
-class Post
+class Post implements PostInterface
 {
     const STATUS_DRAFT     = 'draft';
     const STATUS_PUBLISHED = 'published';

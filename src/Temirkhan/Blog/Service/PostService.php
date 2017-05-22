@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace BlogBundle\Service;
+namespace Temirkhan\Blog\Service;
 
-use BlogBundle\Entity\Post;
 use BlogBundle\Repository\PostRepositoryInterface;
+use Temirkhan\Blog\Entity\PostInterface;
 
 /**
  * Сервис публикаций
@@ -13,6 +13,8 @@ use BlogBundle\Repository\PostRepositoryInterface;
 class PostService implements PostServiceInterface
 {
     /**
+     * Репозиторий публикаций
+     *
      * @var PostRepositoryInterface
      */
     private $postRepository;
@@ -30,14 +32,10 @@ class PostService implements PostServiceInterface
     /**
      * Добавляет публикацию
      *
-     * @param Post $post
-     *
-     * @return Post
+     * @param PostInterface $post
      */
-    public function add(Post $post): Post
+    public function add(PostInterface $post)
     {
         $this->postRepository->add($post);
-
-        return $post;
     }
 }

@@ -5,6 +5,7 @@ namespace BlogBundle\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
+use Temirkhan\Blog\Entity\CommentInterface;
 
 /**
  * Комментарий
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\Index;
  *      }
  * )
  */
-class Comment
+class Comment implements CommentInterface
 {
     /**
      * Идентификатор
