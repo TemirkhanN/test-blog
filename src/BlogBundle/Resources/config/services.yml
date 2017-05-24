@@ -8,14 +8,6 @@ services:
             - '@blog.service.post'
             - '@router'
 
-    # Контроллер входа в систему
-    blog.controller.login:
-        class: BlogBundle\Controller\Auth\LoginController
-        arguments:
-            - '@templating'
-            - '@temirkhan.user.service.login'
-            - '@form.factory'
-
     # Контроллер выхода из системы
     blog.controller.logout:
         class: BlogBundle\Controller\Auth\LogoutController
@@ -24,12 +16,12 @@ services:
 
     # Репозиторий публикаций
     blog.repository.post:
-        class: BlogBundle\Repository\PostRepository
+        class: Temirkhan\BlogBundle\Repository\PostRepository
         arguments:
             - '@doctrine.orm.entity_manager'
 
     # Сервис публикаций
     blog.service.post:
-        class: BlogBundle\Service\PostService
+        class: Temirkhan\Blog\Service\PostService
         arguments:
             - '@blog.repository.post'

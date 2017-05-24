@@ -12,6 +12,13 @@ use DateTimeInterface;
 interface PostInterface
 {
     /**
+     * Возвращает идентификатор
+     *
+     * @return int
+     */
+    public function getId(): int;
+
+    /**
      * Устанавливает заголовок
      *
      * @param string $title

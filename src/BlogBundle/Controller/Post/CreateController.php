@@ -6,12 +6,13 @@ namespace BlogBundle\Controller\Post;
 
 use BlogBundle\Controller\AbstractController;
 use BlogBundle\Form\PostType;
-use BlogBundle\Service\PostServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
+use Temirkhan\Blog\Service\PostServiceInterface;
 
 /**
  * Контроллер добавления публикации
@@ -63,6 +64,8 @@ class CreateController extends AbstractController
      * Создает публикацию
      *
      * @return Response
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function execute(Request $request): Response
     {

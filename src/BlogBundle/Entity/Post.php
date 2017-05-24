@@ -3,12 +3,15 @@
 namespace BlogBundle\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\OrderBy;
+use Temirkhan\Blog\Entity\AuthorInterface;
+use Temirkhan\Blog\Entity\CommentInterface;
 use Temirkhan\Blog\Entity\PostInterface;
 
 /**
@@ -68,6 +71,8 @@ class Post implements PostInterface
 
     /**
      * Дата добавления
+     *
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="add_date", type="datetime")
      */
@@ -154,9 +159,9 @@ class Post implements PostInterface
     /**
      * Указывает дату создания
      *
-     * @param DateTime $addDate
+     * @param DateTimeInterface $addDate
      */
-    public function setAddDate(DateTime $addDate)
+    public function setAddDate(DateTimeInterface $addDate)
     {
         $this->addDate = $addDate;
     }
@@ -164,9 +169,9 @@ class Post implements PostInterface
     /**
      * Возвращает дату создания
      *
-     * @return DateTime
+     * @return DateTimeInterface
      */
-    public function getAddDate(): DateTime
+    public function getAddDate(): DateTimeInterface
     {
         return $this->addDate;
     }
@@ -174,9 +179,9 @@ class Post implements PostInterface
     /**
      * Устанавливает дату опубликования
      *
-     * @param DateTime $pubDate
+     * @param DateTimeInterface $pubDate
      */
-    public function setPubDate(DateTime $pubDate)
+    public function setPubDate(DateTimeInterface $pubDate)
     {
         $this->pubDate = $pubDate;
     }
@@ -184,7 +189,7 @@ class Post implements PostInterface
     /**
      * Возвращает дату опубликования
      *
-     * @return null|DateTime
+     * @return null|DateTimeInterface
      */
     public function getPubDate()
     {
@@ -234,9 +239,9 @@ class Post implements PostInterface
     /**
      * Возвращает автора
      *
-     * @return Author
+     * @return AuthorInterface
      */
-    public function getAuthor(): Author
+    public function getAuthor(): AuthorInterface
     {
         return $this->author;
     }
@@ -244,9 +249,9 @@ class Post implements PostInterface
     /**
      * Добавляет комментарий
      *
-     * @param Comment $comment
+     * @param CommentInterface $comment
      */
-    public function addComment(Comment $comment)
+    public function addComment(CommentInterface $comment)
     {
         $this->comments->add($comment);
     }
@@ -254,9 +259,9 @@ class Post implements PostInterface
     /**
      * Удаляет комментарий
      *
-     * @param Comment $comment
+     * @param CommentInterface $comment
      */
-    public function deleteComment(Comment $comment)
+    public function deleteComment(CommentInterface $comment)
     {
         $this->comments->removeElement($comment);
     }
@@ -264,7 +269,7 @@ class Post implements PostInterface
     /**
      * Возвращает комментарии
      *
-     * @return Comment[]
+     * @return CommentInterface[]
      */
     public function getComments(): array
     {
