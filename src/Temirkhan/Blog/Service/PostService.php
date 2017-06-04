@@ -57,4 +57,16 @@ class PostService implements PostServiceInterface
     {
         return $this->postRepository->getList($postFilter, $pageFilter);
     }
+
+    /**
+     * Возвращает количество публикаций
+     *
+     * @param PostFilter $filter
+     *
+     * @return int
+     */
+    public function count(PostFilter $filter): int
+    {
+        return $this->postRepository->count($filter);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace BlogBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Temirkhan\Blog\Entity\AuthorInterface;
 use Temirkhan\UserBundle\Entity\User;
@@ -96,5 +97,13 @@ class Author implements AuthorInterface
     public function setName(string $name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return DateTimeInterface
+     */
+    public function getRegistrationDate(): DateTimeInterface
+    {
+        return $this->getUser()->getRegDate();
     }
 }

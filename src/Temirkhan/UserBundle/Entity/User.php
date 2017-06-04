@@ -6,8 +6,6 @@ namespace Temirkhan\UserBundle\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -18,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     @ORM\Index(name="user_login_idx", columns={"login"})
  * })
  */
-class User implements UserInterface, EncoderAwareInterface
+class User implements UserInterface
 {
     /**
      * Идентификатор
@@ -224,15 +222,5 @@ class User implements UserInterface, EncoderAwareInterface
     public function eraseCredentials()
     {
         return;
-    }
-
-    /**
-     * Возвращает шифратор пароля
-     *
-     * @return string
-     */
-    public function getEncoderName()
-    {
-        return BCryptPasswordEncoder::class;
     }
 }

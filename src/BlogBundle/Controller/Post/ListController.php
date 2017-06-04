@@ -51,7 +51,12 @@ class ListController extends AbstractController
     public function execute(PostFilter $postFilter, PageFilter $pageFilter): Response
     {
         $posts = $this->postService->getList($postFilter, $pageFilter);
+        $total = $this->postService->count($postFilter);
 
-        return $this->respond('@Blog/comment/common-list.html.twig', ['posts' => $posts]);
+        return $this->respond('@Blog/post/common-list.html.twig', [
+            'posts'  => $posts,
+            'total'  => $total,
+            'onPage' =>  $pageFilter->getCount(),
+        ]);
     }
 }

@@ -1,6 +1,7 @@
 imports:
     - { resource: controllers.yml }
     - { resource: repositories.yml }
+    - { resource: param-converters.yml }
 
 services:
     # Сервис авторов

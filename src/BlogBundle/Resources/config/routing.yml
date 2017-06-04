@@ -11,7 +11,7 @@ blog.login:
 #Основая страница блога со списком публикаций
 blog_posts:
     path: /{page}
-    defaults: { _controller: blog.controller.post.list:execute }
+    defaults: { _controller: blog.controller.post.list:execute, page: 1 }
     requirements:
         page: '[1-9][0-9]*'
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace BlogBundle\Controller\Author;
 
 use BlogBundle\Controller\AbstractController;
+use BlogBundle\Controller\RouterAwareTrait;
 use BlogBundle\Form\RegistrationType;
 use BlogBundle\Service\AuthorService;
-use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +19,8 @@ use Throwable;
  */
 class RegisterController extends AbstractController
 {
+    use RouterAwareTrait;
+
     /**
      * Фабрика форм
      *
@@ -64,7 +66,7 @@ class RegisterController extends AbstractController
             try {
                 $this->authorService->registerAuthor($form->getData());
 
-                return $this->respondRedirect('/login');
+                return $this->respondRedirect($this->router->generate('blog.login'));
             } catch(Throwable $e) {
                 $this->addFlashError('Произошла непредвиденная ошибка');
             }

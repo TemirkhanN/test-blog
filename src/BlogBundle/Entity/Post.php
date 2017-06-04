@@ -17,6 +17,7 @@ use Temirkhan\Blog\Entity\PostInterface;
 /**
  * Публикация
  *
+ * @ORM\Entity()
  * @ORM\Table(name="post", indexes={@Index(name="author_id_index", columns={"author_id"})})
  */
 class Post implements PostInterface
@@ -89,7 +90,7 @@ class Post implements PostInterface
      * Комментарии
      *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
-     * @OrderBy({"pubDate"="DESC"})
+     * @OrderBy({"addDate"="DESC"})
      */
     private $comments;
 

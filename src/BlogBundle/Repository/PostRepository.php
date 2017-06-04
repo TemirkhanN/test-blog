@@ -58,6 +58,22 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
+     * Возвращает количество публикаций, удовлетворяющих условиям
+     *
+     * @param PostFilter $postFilter
+     *
+     * @return int
+     */
+    public function count(PostFilter $postFilter): int
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('count(p.id)')
+            ->from('BlogBundle:Post', 'p')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * Возвращает репозиторий публикаций
      *
      * @return ObjectRepository

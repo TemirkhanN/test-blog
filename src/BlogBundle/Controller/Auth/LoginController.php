@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace BlogBundle\Controller\Auth;
 
 use BlogBundle\Controller\AbstractController;
+use BlogBundle\Controller\RouterAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,8 @@ use Temirkhan\UserBundle\Service\AuthService;
  */
 class LoginController extends AbstractController
 {
+    use RouterAwareTrait;
+
     /**
      * Сервис аутентификации
      *
@@ -64,7 +67,7 @@ class LoginController extends AbstractController
             try {
                 $this->authService->authenticate($loginForm->getData());
 
-                return $this->respondRedirect('/blog');
+                return $this->respondRedirect($this->router->generate('blog_posts'));
             } catch (AuthenticationException $e) {
                 $this->addFlashError('Пользователь с такими данными не существует');
             }

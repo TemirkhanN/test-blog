@@ -1,0 +1,12 @@
+services:
+    # Конвертер фильтра публикаций
+    blog.paramconverter.post_filter:
+        class: BlogBundle\ParamConverter\PostFilterConverter
+        tags:
+            - { name: request.param_converter }
+
+    # Конвертер постраничного фильтра
+    blog.paramconverter.page_filter:
+        class: BlogBundle\ParamConverter\PageFilterConverter
+        tags:
+            - { name: request.param_converter }

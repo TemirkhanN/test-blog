@@ -19,3 +19,7 @@ security:
             logout:
                 path: /logout
                 target: /
+    encoders:
+        Temirkhan\UserBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12

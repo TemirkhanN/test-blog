@@ -45,46 +45,6 @@ abstract class AbstractController
     }
 
     /**
-     * Возвращает страницу с ошибкой 404
-     *
-     * @param string $message
-     *
-     * @return Response
-     */
-    protected function respondNotFound(string $message = 'Not found'): Response
-    {
-        return new Response(
-            $this->renderer->render(
-                '@Blog/technical/error404.html.twig',
-                [
-                    'message' => $message,
-                ]
-            ),
-            Response::HTTP_NOT_FOUND
-        );
-    }
-
-    /**
-     * Возвращает страницу с ошибкой доступа
-     *
-     * @param string $message
-     *
-     * @return Response
-     */
-    protected function respondAccessForbidden(string $message = 'Forbidden'): Response
-    {
-        return new Response(
-            $this->renderer->render(
-                '@Blog/technical/error403.html.twig',
-                [
-                    'message' => $message,
-                ]
-            ),
-            Response::HTTP_FORBIDDEN
-        );
-    }
-
-    /**
      * Создает перенаправление
      *
      * @param string $link

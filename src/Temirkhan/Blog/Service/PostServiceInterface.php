@@ -31,4 +31,13 @@ interface PostServiceInterface
      * @return PostInterface[]
      */
     public function getList(PostFilter $filter, PageFilter $pageFilter): array;
+
+    /**
+     * Возвращает количество публикаций
+     *
+     * @param PostFilter $filter
+     *
+     * @return int
+     */
+    public function count(PostFilter $filter): int;
 }

@@ -10,10 +10,11 @@ use Temirkhan\Blog\Entity\CommentInterface;
 /**
  * Комментарий
  *
+ * @ORM\Entity()
  * @ORM\Table(name="comment",
  *      indexes={
- *          @Index(name="pubdate_index", columns={"pub_date"}),
- *          @Index(name="target_index", columns={"author_id", "post_id"})
+ *          @Index(name="author_idx", columns={"author_id"}),
+ *          @Index(name="post_idx", columns={"post_id"}),
  *      }
  * )
  */

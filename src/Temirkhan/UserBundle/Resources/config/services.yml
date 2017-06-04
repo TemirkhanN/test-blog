@@ -1,5 +1,5 @@
 parameters:
-    auth_provider_area: 'blog' # не должно быть тут. разделяй логику в модулях
+    auth_provider_area: 'blog'
 
 services:
     # Репозиторий пользователей
@@ -7,20 +7,6 @@ services:
         class: Temirkhan\UserBundle\Repository\UserRepository
         arguments:
             - '@doctrine.orm.entity_manager'
-
-    # Сервис пользователей
-    temirkhan.user.service.user:
-        class: Temirkhan\UserBundle\Service\UserService
-        arguments:
-            - '@temirkhan.user.repository.user'
-            - '@temirkhan.user.encoder_factory'
-
-    # Провайдер пользователей
-    temirkhan.user.provider.user:
-        class: Temirkhan\UserBundle\Provider\UserProvider
-        arguments:
-            - '@temirkhan.user.repository.user'
-            - '@temirkhan.user.encoder_factory'
 
     # Сервис аутентификации
     temirkhan.user.service.auth:
@@ -30,18 +16,19 @@ services:
             - '%auth_provider_area%'
             - '@security.token_storage'
 
-    # Шифратор bcrypt
-    temirkhan.user.bcrypt_encoder:
-        class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
-        arguments: [ 12]
-
-    # Фабрика шифраторов
-    temirkhan.user.encoder_factory:
-        class: Symfony\Component\Security\Core\Encoder\EncoderFactory
+    # Сервис пользователей
+    temirkhan.user.service.user:
+        class: Temirkhan\UserBundle\Service\UserService
         arguments:
-            -
-                Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder: '@temirkhan.user.bcrypt_encoder'
-        public: false
+            - '@temirkhan.user.repository.user'
+            - '@security.encoder_factory'
+
+    # Провайдер пользователей
+    temirkhan.user.provider.user:
+        class: Temirkhan\UserBundle\Provider\UserProvider
+        arguments:
+            - '@temirkhan.user.repository.user'
+            - '@security.encoder_factory'
 
     # Провайдер аутентификации
     temirkhan.user.service.auth_provider:
@@ -50,4 +37,4 @@ services:
             - '@temirkhan.user.provider.user'
             - '@security.user_checker'
             - '%auth_provider_area%'
-            - '@temirkhan.user.encoder_factory'
+            - '@security.encoder_factory'
