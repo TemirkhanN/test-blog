@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace BlogBundle\Security;
 
 use BlogBundle\Entity\Article;
-use Doctrine\Common\Util\Debug;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Temirkhan\BlogBundle\Repository;
+namespace BlogBundle\Repository;
 
 use BlogBundle\Entity\Post;
 use Doctrine\Common\Persistence\ObjectRepository;

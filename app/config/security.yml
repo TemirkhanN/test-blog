@@ -6,11 +6,16 @@ security:
     providers:
         session_provider:
             memory: ~
-
+        blog_user_provider:
+            id: temirkhan.user.provider.user
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-        main:
+        blog:
             anonymous: ~
+            provider: blog_user_provider
+            pattern: ^/
+            logout:
+                path: /logout
+                target: /

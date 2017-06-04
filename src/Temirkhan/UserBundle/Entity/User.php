@@ -6,16 +6,19 @@ namespace Temirkhan\UserBundle\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Пользователь
  *
  * @ORM\Entity()
- * @ORM\Table(name="user", indexes={
+ * @ORM\Table(name="`user`", indexes={
  *     @ORM\Index(name="user_login_idx", columns={"login"})
  * })
  */
-class User
+class User implements UserInterface, EncoderAwareInterface
 {
     /**
      * Идентификатор
@@ -47,6 +50,24 @@ class User
      * @ORM\Column(type="string", length=255)
      */
     private $password = '';
+
+    /**
+     * Соль, использованная для создания пароля
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $salt;
+
+    /**
+     * Список ролей пользователя
+     *
+     * @var array
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $roles = [];
 
     /**
      * Дата регистрации
@@ -83,6 +104,16 @@ class User
     public function getLogin(): string
     {
         return $this->login;
+    }
+
+    /**
+     * Возвращает логин пользователя
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->getLogin();
     }
 
     /**
@@ -133,5 +164,75 @@ class User
     public function setRegDate(DateTime $regDate)
     {
         $this->regDate = clone $regDate;
+    }
+
+    /**
+     * Возвращает соль
+     *
+     * @return null
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Возвращает список ролей
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Добавляет роль
+     *
+     * @param string $role
+     */
+    public function addRole(string $role)
+    {
+        if (in_array($role, $this->roles)) {
+            return;
+        }
+
+        $this->roles[] = $role;
+    }
+
+    /**
+     * Удаляет роль
+     *
+     * @param string $role
+     */
+    public function removeRole(string $role)
+    {
+        $roles = array_flip($this->roles);
+
+        if (!array_key_exists($role, $roles)) {
+            return;
+        }
+
+        unset($roles[$role]);
+
+        $this->roles = array_keys($roles);
+    }
+
+    /**
+     * Вычищает уязвимые данные
+     */
+    public function eraseCredentials()
+    {
+        return;
+    }
+
+    /**
+     * Возвращает шифратор пароля
+     *
+     * @return string
+     */
+    public function getEncoderName()
+    {
+        return BCryptPasswordEncoder::class;
     }
 }

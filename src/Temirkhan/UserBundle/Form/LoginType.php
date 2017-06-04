@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Temirkhan\UserBundle\ValueObject\LoginData;
+use Temirkhan\UserBundle\ValueObject\LoginCredentials;
 
 /**
  * Форма входа в систему
@@ -63,7 +63,7 @@ class LoginType extends AbstractType implements DataMapperInterface
     public function mapDataToForms($data, $forms)
     {
         if (!$data) {
-            $data = new LoginData('', '');
+            $data = new LoginCredentials('', '');
         }
 
         $forms = iterator_to_array($forms);
@@ -75,14 +75,14 @@ class LoginType extends AbstractType implements DataMapperInterface
     /**
      * Заполняет объект данными из формы
      *
-     * @param \Symfony\Component\Form\FormInterface[] $forms
+     * @param FormInterface[] $forms
      * @param mixed                                   $data
      */
     public function mapFormsToData($forms, &$data)
     {
         $forms = iterator_to_array($forms);
 
-        $data = new LoginData($forms['login']->getData(), $forms['password']->getData());
+        $data = new LoginCredentials($forms['login']->getData(), $forms['password']->getData());
     }
 
     /**
@@ -94,7 +94,7 @@ class LoginType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults([
             'allow_extra_fields' => true,
-            'data_class'         => LoginData::class,
+            'data_class'         => LoginCredentials::class,
             'empty_data'         => null,
             'error_bubbling'     => false,
         ]);

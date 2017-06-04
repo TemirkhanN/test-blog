@@ -1,0 +1,12 @@
+services:
+    # Репозиторий авторов
+    blog.repository.author:
+        class: BlogBundle\Repository\AuthorRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    # Репозиторий публикаций
+    blog.repository.post:
+        class: BlogBundle\Repository\PostRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'

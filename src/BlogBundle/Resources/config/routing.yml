@@ -1,22 +1,17 @@
 #Страница решистрации
 blog_register:
-    path: /register
-    defaults: { _controller: blog_bundle.controller.user:registerAction }
+    path: /registration
+    defaults: { _controller: blog.controller.author.register:execute }
 
 # Страница входа
 blog.login:
     path: /login
-    defaults: { _controller: blog.controller.login:execute }
-
-#Страница выхода
-blog_logout:
-    path: /logout
-    defaults: { _controller: blog_bundle.controller.logout:logout }
+    defaults: { _controller: blog.controller.auth.login:execute }
 
 #Основая страница блога со списком публикаций
 blog_posts:
     path: /{page}
-    defaults: { _controller: blog_bundle.controller.post:indexAction, page: 1, onPage: 10 }
+    defaults: { _controller: blog.controller.post.list:execute }
     requirements:
         page: '[1-9][0-9]*'
 

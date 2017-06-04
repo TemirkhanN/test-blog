@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Temirkhan\UserBundle\Repository;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Temirkhan\UserBundle\Entity\User;
 
 /**
@@ -28,6 +28,16 @@ class UserRepository
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * Добавляет пользователя
+     *
+     * @param User $user
+     */
+    public function add(User $user)
+    {
+        $this->entityManager->persist($user);
     }
 
     /**
@@ -57,18 +67,18 @@ class UserRepository
         /**
          * @var User|null $user
          */
-        $user = $this->getPersister()->load($criteria);
+        $user = $this->getRepository()->findOneBy($criteria);
 
         return $user;
     }
 
     /**
-     * Возвращает persister
+     * Возвращает репозиторий
      *
-     * @return EntityPersister
+     * @return ObjectRepository
      */
-    private function getPersister(): EntityPersister
+    private function getRepository(): ObjectRepository
     {
-        return $this->entityManager->getUnitOfWork()->getEntityPersister(User::class);
+        return $this->entityManager->getRepository(User::class);
     }
 }

@@ -11,22 +11,22 @@
             background-color: #eee;
         }
 
-        .form-register {
+        .registration-form {
             max-width: 330px;
             padding: 15px;
             margin: 0 auto;
         }
 
-        .form-register .h2,
-        .form-register .checkbox {
+        .registration-form .h2,
+        .registration-form .checkbox {
             margin-bottom: 10px;
         }
 
-        .form-register .checkbox {
+        .registration-form .checkbox {
             font-weight: normal;
         }
 
-        .form-register .form-control {
+        .registration-form .form-control {
             position: relative;
             height: auto;
             -webkit-box-sizing: border-box;
@@ -36,17 +36,17 @@
             font-size: 16px;
         }
 
-        .form-register .form-control:focus {
+        .registration-form .form-control:focus {
             z-index: 2;
         }
 
-        .form-register input[type="email"] {
+        .registration-form input[type="email"] {
             margin-bottom: -1px;
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
         }
 
-        .form-register input[type="password"] {
+        .registration-form input[type="password"] {
             margin-bottom: 10px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
@@ -58,8 +58,8 @@
 {% block body %}
     {% include "@Blog/layer/flash-errors.html.twig" %}
 
-    {{ form_start(register_form) }}
-    {{ form_errors(register_form) }}
-    {{ form_widget(register_form, {'attr':{'class': 'form-register'}}) }}
-    {{ form_end(register_form) }}
+    {{ form_start(registration_form) }}
+    {{ form_errors(registration_form) }}
+    {{ form_widget(registration_form, {'attr':{'class': 'registration-form'}}) }}
+    {{ form_end(registration_form) }}
 {% endblock %}

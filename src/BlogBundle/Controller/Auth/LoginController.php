@@ -9,8 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Temirkhan\UserBundle\Form\LoginType;
-use Temirkhan\UserBundle\Service\LoginServiceInterface;
+use Temirkhan\UserBundle\Service\AuthService;
 
 /**
  * Контроллер входа в систему
@@ -18,11 +19,11 @@ use Temirkhan\UserBundle\Service\LoginServiceInterface;
 class LoginController extends AbstractController
 {
     /**
-     * Сервис входа в систему
+     * Сервис аутентификации
      *
-     * @var LoginServiceInterface
+     * @var AuthService
      */
-    private $loginService;
+    private $authService;
 
     /**
      * Фабрика форм
@@ -35,14 +36,14 @@ class LoginController extends AbstractController
      * Конструктор
      *
      * @param EngineInterface       $engine
-     * @param LoginServiceInterface $loginService
+     * @param AuthService $authService
      * @param FormFactory           $formFactory
      */
-    public function __construct(EngineInterface $engine, LoginServiceInterface $loginService, FormFactory $formFactory)
+    public function __construct(EngineInterface $engine, AuthService $authService, FormFactory $formFactory)
     {
         parent::__construct($engine);
 
-        $this->loginService = $loginService;
+        $this->authService  = $authService;
         $this->formFactory  = $formFactory;
     }
 
@@ -60,13 +61,15 @@ class LoginController extends AbstractController
         $loginForm->handleRequest($request);
 
         if ($loginForm->isSubmitted() && $loginForm->isValid()) {
-            if ($this->loginService->login($loginForm->getData())) {
-                return $this->respondRedirect('/blog');
-            }
+            try {
+                $this->authService->authenticate($loginForm->getData());
 
-            $this->addFlashError('Пользователя с такими данными не существует');
+                return $this->respondRedirect('/blog');
+            } catch (AuthenticationException $e) {
+                $this->addFlashError('Пользователь с такими данными не существует');
+            }
         }
 
-        return $this->respond('@Blog/user/login.html.twig', ['login_form' => $loginForm->createView()]);
+        return $this->respond('@Blog/author/login.html.twig', ['login_form' => $loginForm->createView()]);
     }
 }

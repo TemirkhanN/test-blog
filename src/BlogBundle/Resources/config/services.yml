@@ -1,24 +1,14 @@
+imports:
+    - { resource: controllers.yml }
+    - { resource: repositories.yml }
+
 services:
-    # Контроллер создания публикаций
-    blog.controller.create_post:
-        class: BlogBundle\Controller\Post\CreateController
+    # Сервис авторов
+    blog.service.author:
+        class: BlogBundle\Service\AuthorService
         arguments:
-            - '@templating'
-            - '@form.factory'
-            - '@blog.service.post'
-            - '@router'
-
-    # Контроллер выхода из системы
-    blog.controller.logout:
-        class: BlogBundle\Controller\Auth\LogoutController
-        arguments:
-            - '@templating'
-
-    # Репозиторий публикаций
-    blog.repository.post:
-        class: Temirkhan\BlogBundle\Repository\PostRepository
-        arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@temirkhan.user.service.user'
+            - '@blog.repository.author'
 
     # Сервис публикаций
     blog.service.post:

@@ -15,6 +15,8 @@ use Temirkhan\UserBundle\Entity\User;
  */
 class Author implements AuthorInterface
 {
+    const ROLE_AUTHOR = 'ROLE_AUTHOR';
+
     /**
      * Идентификатор
      *
@@ -27,12 +29,21 @@ class Author implements AuthorInterface
     private $id = 0;
 
     /**
+     * Имя
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
      * Пользователь
      *
      * @var User
      *
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * @ORM\OneToOne(targetEntity="Temirkhan\UserBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="Temirkhan\UserBundle\Entity\User", orphanRemoval=true)
      */
     private $user;
 
@@ -44,6 +55,7 @@ class Author implements AuthorInterface
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->user->addRole(self::ROLE_AUTHOR);
     }
 
     /**
@@ -64,5 +76,25 @@ class Author implements AuthorInterface
     public function getUser(): User
     {
         return $this->user;
+    }
+
+    /**
+     * Возвращает имя
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Устанавливает имя
+     *
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
     }
 }

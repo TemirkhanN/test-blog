@@ -45,7 +45,6 @@ class ListController extends AbstractController
      *
      * @Configuration\ParamConverter("postFilter")
      * @Configuration\ParamConverter("pageFilter");
-     * @Configuration\Security("is_granted('view_posts')")
      *
      * @return Response
      */

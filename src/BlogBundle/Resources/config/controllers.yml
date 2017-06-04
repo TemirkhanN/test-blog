@@ -1,0 +1,38 @@
+services:
+    # Контроллер аутентификации
+    blog.controller.auth.login:
+        class: BlogBundle\Controller\Auth\LoginController
+        arguments:
+            - '@templating'
+            - '@temirkhan.user.service.auth'
+            - '@form.factory'
+
+    # Контроллер выхода из системы
+    blog.controller.auth.logout:
+        class: BlogBundle\Controller\Auth\LogoutController
+        arguments:
+            - '@templating'
+
+    # Контроллер регистрации
+    blog.controller.author.register:
+        class: BlogBundle\Controller\Author\RegisterController
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - '@blog.service.author'
+
+    # Контроллер создания публикаций
+    blog.controller.post.create:
+        class: BlogBundle\Controller\Post\CreateController
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - '@blog.service.post'
+            - '@router'
+
+    # Контроллер списка публикаций
+    blog.controller.post.list:
+        class: BlogBundle\Controller\Post\ListController
+        arguments:
+            - '@templating'
+            - '@blog.service.post'

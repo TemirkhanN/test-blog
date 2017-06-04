@@ -1,27 +1,27 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Temirkhan\UserBundle\ValueObject;
 
 /**
- * Данные для входа в систему
+ * Данные для регистрации пользователя
  */
-class LoginData
+class RegistrationCredentials
 {
     /**
      * Логин
      *
      * @var string
      */
-    private $login;
+    private $login = '';
 
     /**
      * Пароль
      *
      * @var string
      */
-    private $password;
+    private $password = '';
 
     /**
      * Конструктор
@@ -31,7 +31,7 @@ class LoginData
      */
     public function __construct(string $login, string $password)
     {
-        $this->login    = $login;
+        $this->login = $login;
         $this->password = $password;
     }
 

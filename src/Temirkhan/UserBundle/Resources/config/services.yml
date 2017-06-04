@@ -1,3 +1,6 @@
+parameters:
+    auth_provider_area: 'blog' # не должно быть тут. разделяй логику в модулях
+
 services:
     # Репозиторий пользователей
     temirkhan.user.repository.user:
@@ -10,3 +13,41 @@ services:
         class: Temirkhan\UserBundle\Service\UserService
         arguments:
             - '@temirkhan.user.repository.user'
+            - '@temirkhan.user.encoder_factory'
+
+    # Провайдер пользователей
+    temirkhan.user.provider.user:
+        class: Temirkhan\UserBundle\Provider\UserProvider
+        arguments:
+            - '@temirkhan.user.repository.user'
+            - '@temirkhan.user.encoder_factory'
+
+    # Сервис аутентификации
+    temirkhan.user.service.auth:
+        class: Temirkhan\UserBundle\Service\AuthService
+        arguments:
+            - '@temirkhan.user.service.auth_provider'
+            - '%auth_provider_area%'
+            - '@security.token_storage'
+
+    # Шифратор bcrypt
+    temirkhan.user.bcrypt_encoder:
+        class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
+        arguments: [ 12]
+
+    # Фабрика шифраторов
+    temirkhan.user.encoder_factory:
+        class: Symfony\Component\Security\Core\Encoder\EncoderFactory
+        arguments:
+            -
+                Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder: '@temirkhan.user.bcrypt_encoder'
+        public: false
+
+    # Провайдер аутентификации
+    temirkhan.user.service.auth_provider:
+        class: Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider
+        arguments:
+            - '@temirkhan.user.provider.user'
+            - '@security.user_checker'
+            - '%auth_provider_area%'
+            - '@temirkhan.user.encoder_factory'
