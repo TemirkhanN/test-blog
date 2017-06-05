@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Temirkhan\Blog\Filter\PostFilter;
 
 /**
- * Конвертер фильтров публикации
+ * Конвертер фильтров публикаций
  */
 class PostFilterConverter implements ParamConverterInterface
 {
@@ -25,11 +25,17 @@ class PostFilterConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        $postFilter = new PostFilter();
+        $filter = $request->query->get('filter');
+
+        if (!$filter) {
+            $filter = [];
+        }
+
+        $postFilter = new PostFilter($filter);
 
         $request->attributes->set($configuration->getName(), $postFilter);
 
-            return true;
+        return true;
     }
 
     /**

@@ -17,50 +17,49 @@ blog_posts:
 
 #Страница с публикациями автора
 author_posts:
-    path: /author-{author}/{page}
-    defaults: { _controller: blog_bundle.controller.post:getAuthorContentsAction, page: 1, onPage: 10 }
+    path: /authors/{author}/{page}
+    defaults: { _controller: blog.controller.author.post_list:execute, page: 1}
     requirements:
-        page: '[1-9][0-9]*'
+        page:   '[1-9][0-9]*'
         author: '[1-9][0-9]*'
-        onPage: '[1-9][0-9]*'
 
 #Страница с публикацией
 blog_post:
     path: /posts/{post}
-    defaults: { _controller: blog_bundle.controller.post:getContentAction }
+    defaults: { _controller: blog.controller.post.view:execute }
     requirements:
         post: '[1-9][0-9]*'
 
 #Страница добавления публикации
 add_post:
-    path: /post/add
-    defaults: { _controller: blog.controller.create_post:execute }
+    path: /posts/add
+    defaults: { _controller: blog.controller.post.create:execute }
     methods: [POST, GET]
 
 #Страница редактирования публикации
 edit_post:
-    path: /post-{postId}/edit
+    path: /posts/{postId}/edit
     defaults: { _controller: blog_bundle.controller.post:updateContentAction }
     requirements:
         postId: '[1-9][0-9]*'
 
 #Страница выноса публикаций из черновиков в опубликованные
 publish_post:
-    path: /post-{postId}/publish
+    path: /posts/{postId}/publish
     defaults: { _controller: blog_bundle.controller.post:publishContentAction }
     requirements:
         postId: '[1-9][0-9]*'
 
 #Страница удаления публикации
 delete_post:
-    path: /post-{postId}/delete
+    path: /posts/{postId}/delete
     defaults: { _controller: blog_bundle.controller.post:deleteContentAction }
     requirements:
         postId: '[1-9][0-9]*'
 
 #Страница добавления комментария к публикации
 add_comment:
-    path: /comment/add/post-{postId}
+    path: /posts/{postId}/comment/add
     defaults: { _controller: BlogBundle:Comment:createComment }
     requirements:
         postId: '[1-9][0-9]*'

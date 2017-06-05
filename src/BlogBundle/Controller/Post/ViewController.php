@@ -5,7 +5,8 @@ declare(strict_types = 1);
 namespace BlogBundle\Controller\Post;
 
 use BlogBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration;
+use BlogBundle\Entity\Author;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\Response;
 use Temirkhan\Blog\Entity\PostInterface;
 
@@ -18,14 +19,17 @@ class ViewController extends AbstractController
      * Просмотр публикации
      *
      * @param PostInterface $post
+     * @param Author        $currentAuthor
      *
      * @return Response
      *
-     * @Configuration\ParamConverter("post")
-     * @Configuration\Security("is_granted('view_post'))
+     * @Extra\ParamConverter("post", class="BlogBundle:Post")
+     * @Extra\ParamConverter("currentAuthor")
      */
-    public function execute(PostInterface $post): Response
+    public function execute(PostInterface $post, Author $currentAuthor): Response
     {
-        return $this->respond('@Blog/post/common-item.html.twig', ['post' => $post]);
+        $isOwner = $post->isPublishedBy($currentAuthor);
+
+        return $this->respond('@Blog/post/common-item.html.twig', ['post' => $post, 'isOwner' => $isOwner]);
     }
 }

@@ -6,11 +6,13 @@ namespace BlogBundle\Repository;
 
 use BlogBundle\Entity\Author;
 use Doctrine\ORM\EntityManagerInterface;
+use Temirkhan\Blog\Entity\AuthorInterface;
+use Temirkhan\Blog\Repository\AuthorRepositoryInterface;
 
 /**
  * Репозиторий авторов
  */
-class AuthorRepository
+class AuthorRepository implements AuthorRepositoryInterface
 {
     /**
      * Менеджейр сущностей
@@ -32,10 +34,22 @@ class AuthorRepository
     /**
      * Добавляет автора
      *
-     * @param Author $author
+     * @param AuthorInterface $author
      */
-    public function add(Author $author)
+    public function add(AuthorInterface $author)
     {
         $this->entityManager->persist($author);
+    }
+
+    /**
+     * Возвращает автора, удовлетворяющего критериям
+     *
+     * @param array $criteria
+     *
+     * @return AuthorInterface|null
+     */
+    public function findOneBy(array $criteria)
+    {
+        return $this->entityManager->getRepository(Author::class)->findOneBy($criteria);
     }
 }

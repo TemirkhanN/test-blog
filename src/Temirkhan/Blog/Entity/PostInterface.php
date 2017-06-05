@@ -19,25 +19,11 @@ interface PostInterface
     public function getId(): int;
 
     /**
-     * Устанавливает заголовок
-     *
-     * @param string $title
-     */
-    public function setTitle(string $title);
-
-    /**
      * Возвращает заголовок
      *
      * @return string
      */
     public function getTitle(): string;
-
-    /**
-     * Устанавливает контект
-     *
-     * @param string $content
-     */
-    public function setContent($content);
 
     /**
      * Возвращает контект
@@ -47,25 +33,11 @@ interface PostInterface
     public function getContent(): string;
 
     /**
-     * Указывает дату создания
-     *
-     * @param DateTimeInterface $addDate
-     */
-    public function setAddDate(DateTimeInterface $addDate);
-
-    /**
      * Возвращает дату создания
      *
      * @return DateTimeInterface
      */
     public function getAddDate(): DateTimeInterface;
-
-    /**
-     * Устанавливает дату опубликования
-     *
-     * @param DateTimeInterface $pubDate
-     */
-    public function setPubDate(DateTimeInterface $pubDate);
 
     /**
      * Возвращает дату опубликования
@@ -75,25 +47,11 @@ interface PostInterface
     public function getPubDate();
 
     /**
-     * Устанавливает аннотацию
-     *
-     * @param string $teaser
-     */
-    public function setTeaser(string $teaser);
-
-    /**
      * Возвращает аннотацию
      *
      * @return string
      */
     public function getTeaser(): string;
-
-    /**
-     * Устанавливает статус
-     *
-     * @param string $status
-     */
-    public function setStatus(string $status);
 
     /**
      * Возвращает статус
@@ -129,4 +87,13 @@ interface PostInterface
      * @return CommentInterface[]
      */
     public function getComments(): array;
+
+    /**
+     * Определяет, принадлежит ли публикация переданному автору
+     *
+     * @param AuthorInterface $author
+     *
+     * @return bool
+     */
+    public function isPublishedBy(AuthorInterface $author): bool;
 }

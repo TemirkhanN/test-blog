@@ -7,6 +7,8 @@ namespace BlogBundle\Service;
 use BlogBundle\Entity\Author;
 use BlogBundle\ValueObject\RegistrationCredentials;
 use BlogBundle\Repository\AuthorRepository;
+use Temirkhan\Blog\Entity\AuthorInterface;
+use Temirkhan\UserBundle\Entity\User;
 use Temirkhan\UserBundle\Service\UserService;
 
 /**
@@ -50,5 +52,17 @@ class AuthorService
         $this->authorRepository->add($author);
 
         return $author;
+    }
+
+    /**
+     * Возвращает автора по пользователю
+     *
+     * @param User $user
+     *
+     * @return AuthorInterface|null
+     */
+    public function getAuthorByUser(User $user)
+    {
+        return $this->authorRepository->findOneBy(['user' => $user]);
     }
 }

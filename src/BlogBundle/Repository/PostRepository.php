@@ -11,6 +11,7 @@ use Temirkhan\Blog\Entity\PostInterface;
 use Temirkhan\Blog\Filter\PageFilter;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Repository\PostRepositoryInterface;
+use Temirkhan\Blog\Sort\PostSort;
 
 /**
  * Репозиторий публикаций
@@ -47,30 +48,42 @@ class PostRepository implements PostRepositoryInterface
     /**
      * Возвращает список публикаций, удовлетворяющих условию
      *
-     * @param PostFilter $postFilter
-     * @param PageFilter $pageFilter
+     * @param PageFilter      $pageFilter
+     * @param PostFilter|null $postFilter
+     * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getList(PostFilter $postFilter, PageFilter $pageFilter): array
+    public function getList(PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): array
     {
-        return $this->getRepository()->findBy([]);
+        $criteria = $this->getCriteria($postFilter);
+        $orderBy  = $this->getOrderBy($postSort);
+
+        return $this->getRepository()->findBy($criteria, $orderBy, $pageFilter->getCount(), $pageFilter->getOffset());
     }
 
     /**
      * Возвращает количество публикаций, удовлетворяющих условиям
      *
-     * @param PostFilter $postFilter
+     * @param PostFilter|null $postFilter
      *
      * @return int
      */
-    public function count(PostFilter $postFilter): int
+    public function count(PostFilter $postFilter = null): int
     {
-        return $this->entityManager->createQueryBuilder()
+        $queryBuilder = $this->entityManager->createQueryBuilder()
             ->select('count(p.id)')
-            ->from('BlogBundle:Post', 'p')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->from('BlogBundle:Post', 'p');
+
+        if ($criteria = $this->getCriteria($postFilter)) {
+            foreach ($criteria as $field => $condition) {
+                $queryBuilder
+                    ->andWhere(sprintf('p.%s=:%s', $field, $field))
+                    ->setParameter($field, $condition);
+            }
+        }
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -81,5 +94,49 @@ class PostRepository implements PostRepositoryInterface
     private function getRepository(): ObjectRepository
     {
         return $this->entityManager->getRepository(Post::class);
+    }
+
+    /**
+     * Формирует и возвращает сортировку
+     *
+     * @param PostSort|null $postSort
+     *
+     * @return array|null
+     */
+    private function getOrderBy(PostSort $postSort = null)
+    {
+        $sort = null;
+
+        if (!$postSort) {
+            return $sort;
+        }
+
+        if ($addDateSort = $postSort->getAddDate()) {
+            $sort['addDate'] = $addDateSort;
+        }
+
+        return $sort;
+    }
+
+    /**
+     * Формирует и возвращает критерии из фильтров
+     *
+     * @param PostFilter|null $postFilter
+     *
+     * @return array
+     */
+    private function getCriteria(PostFilter $postFilter = null): array
+    {
+        $criteria = [];
+
+        if (!$postFilter) {
+            return $criteria;
+        }
+
+        if ($authorId = $postFilter->getAuthor()) {
+            $criteria['author'] = $authorId;
+        }
+
+        return $criteria;
     }
 }

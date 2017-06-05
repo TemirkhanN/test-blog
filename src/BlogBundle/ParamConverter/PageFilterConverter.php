@@ -25,7 +25,8 @@ class PageFilterConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        $page  = $request->query->get('page');
+        // TODO Уродливо. Переправить
+        $page  = $request->attributes->get('page') ?: $request->query->get('page');
         $count = $request->query->get('count');
 
         if (!$page) {

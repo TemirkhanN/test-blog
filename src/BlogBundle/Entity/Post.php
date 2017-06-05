@@ -28,6 +28,8 @@ class Post implements PostInterface
     /**
      * Идентификатор
      *
+     * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned":true})
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,6 +39,8 @@ class Post implements PostInterface
     /**
      * Автор
      *
+     * @var AuthorInterface
+     *
      * @ManyToOne(targetEntity="Author")
      * @JoinColumn(name="author_id", referencedColumnName="id")
      */
@@ -45,12 +49,16 @@ class Post implements PostInterface
     /**
      * Заголовок
      *
+     * @var string
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title = '';
 
     /**
      * Краткая аннотация
+     *
+     * @var string
      *
      * @ORM\Column(name="teaser", type="string", length=255)
      */
@@ -59,12 +67,16 @@ class Post implements PostInterface
     /**
      * Текст публикации
      *
+     * @var string
+     *
      * @ORM\Column(type="text", length=3000)
      */
     private $content = '';
 
     /**
      * Статус
+     *
+     * @var string
      *
      * @ORM\Column(name="`status`", type="string", length=10)
      */
@@ -82,12 +94,16 @@ class Post implements PostInterface
     /**
      * Дата опубликования
      *
+     * @var DateTimeInterface|null
+     *
      * @ORM\Column(name="pub_date", type="datetime", nullable=true)
      */
     private $pubDate;
 
     /**
      * Комментарии
+     *
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
      * @OrderBy({"addDate"="DESC"})
@@ -97,9 +113,9 @@ class Post implements PostInterface
     /**
      * Конструктор
      *
-     * @param Author $author
+     * @param AuthorInterface $author
      */
-    public function __construct(Author $author)
+    public function __construct(AuthorInterface $author)
     {
         $this->addDate  = new DateTime();
         $this->author   = $author;
@@ -275,5 +291,21 @@ class Post implements PostInterface
     public function getComments(): array
     {
         return $this->comments->toArray();
+    }
+
+    /**
+     * Проверяет, принадлежит ли публикация переданному автору
+     *
+     * @param AuthorInterface $author
+     *
+     * @return bool
+     */
+    public function isPublishedBy(AuthorInterface $author): bool
+    {
+        if ($this->author->getId() === $author->getId()){
+            return true;
+        }
+
+        return false;
     }
 }

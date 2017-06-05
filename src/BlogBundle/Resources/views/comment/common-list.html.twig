@@ -23,7 +23,7 @@
 
 <p>Комментарии</p>
 <div id="comments">
-    {% if comments.count %}
+    {% if comments|length %}
         {% for comment in comments %}
             <div class="comment">
                 <p class="author">{{ comment.author.name }} написал в {{ comment.pubDate|date('H:i d-m-Y') }}</p>

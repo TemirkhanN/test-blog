@@ -25,6 +25,14 @@ services:
         calls:
             - { method: setRouter, arguments: ['@router'] }
 
+
+    # Контроллер списка публикаций
+    blog.controller.author.post_list:
+        class: BlogBundle\Controller\Author\PostListController
+        arguments:
+            - '@templating'
+            - '@blog.service.post'
+
     # Контроллер создания публикаций
     blog.controller.post.create:
         class: BlogBundle\Controller\Post\CreateController
@@ -32,7 +40,15 @@ services:
             - '@templating'
             - '@form.factory'
             - '@blog.service.post'
-            - '@router'
+            - '@blog.service.author'
+        calls:
+            - { method: setRouter, arguments: ['@router'] }
+
+    # Контроллер просмотра публикации
+    blog.controller.post.view:
+        class: BlogBundle\Controller\Post\ViewController
+        arguments:
+            - '@templating'
 
     # Контроллер списка публикаций
     blog.controller.post.list:

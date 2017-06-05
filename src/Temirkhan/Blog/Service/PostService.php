@@ -8,6 +8,7 @@ use Temirkhan\Blog\Entity\PostInterface;
 use Temirkhan\Blog\Filter\PageFilter;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Repository\PostRepositoryInterface;
+use Temirkhan\Blog\Sort\PostSort;
 
 /**
  * Сервис публикаций
@@ -48,24 +49,25 @@ class PostService implements PostServiceInterface
     /**
      * Возвращает список публикаций
      *
-     * @param PostFilter $postFilter
      * @param PageFilter $pageFilter
+     * @param PostFilter|null $postFilter
+     * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getList(PostFilter $postFilter, PageFilter $pageFilter): array
+    public function getList(PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): array
     {
-        return $this->postRepository->getList($postFilter, $pageFilter);
+        return $this->postRepository->getList($pageFilter, $postFilter, $postSort);
     }
 
     /**
      * Возвращает количество публикаций
      *
-     * @param PostFilter $filter
+     * @param PostFilter|null $filter
      *
      * @return int
      */
-    public function count(PostFilter $filter): int
+    public function count(PostFilter $filter = null): int
     {
         return $this->postRepository->count($filter);
     }

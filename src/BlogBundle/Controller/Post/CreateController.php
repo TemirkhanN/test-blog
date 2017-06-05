@@ -5,13 +5,15 @@ declare(strict_types = 1);
 namespace BlogBundle\Controller\Post;
 
 use BlogBundle\Controller\AbstractController;
+use BlogBundle\Controller\RouterAwareTrait;
+use BlogBundle\Entity\Author;
+use BlogBundle\Entity\Post;
 use BlogBundle\Form\PostType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as  Extra;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 use Temirkhan\Blog\Service\PostServiceInterface;
 
 /**
@@ -19,6 +21,8 @@ use Temirkhan\Blog\Service\PostServiceInterface;
  */
 class CreateController extends AbstractController
 {
+    use RouterAwareTrait;
+
     /**
      * Фабрика форм
      *
@@ -34,13 +38,6 @@ class CreateController extends AbstractController
     private $postService;
 
     /**
-     * Маршрутизатор
-     *
-     * @var Router
-     */
-    private $router;
-
-    /**
      * Конструктор
      *
      * @param EngineInterface      $engine
@@ -50,26 +47,29 @@ class CreateController extends AbstractController
     public function __construct(
         EngineInterface $engine,
         FormFactoryInterface $formFactory,
-        PostServiceInterface $postService,
-        Router $router
+        PostServiceInterface $postService
     ) {
         parent::__construct($engine);
 
-        $this->formFactory = $formFactory;
-        $this->postService = $postService;
-        $this->router      = $router;
+        $this->formFactory   = $formFactory;
+        $this->postService   = $postService;
     }
 
     /**
      * Создает публикацию
      *
+     * @param Request $request
+     * @param Author  $currentAuthor
+     *
      * @return Response
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Extra\ParamConverter("author")
+     * @Extra\Security("has_role('ROLE_AUTHOR')")
      */
-    public function execute(Request $request): Response
+    public function execute(Request $request, Author $currentAuthor): Response
     {
-        $form = $this->formFactory->create(PostType::class);
+        $post = new Post($currentAuthor);
+        $form = $this->formFactory->create(PostType::class, $post);
 
         $form->handleRequest($request);
 
@@ -79,6 +79,6 @@ class CreateController extends AbstractController
             return $this->respondRedirect($this->router->generate('blog_post', ['post' => $post->getId()]));
         }
 
-        return $this->respond('@Blog/post/item-form.html.twig', ['postForm' => $form]);
+        return $this->respond('@Blog/post/item-form.html.twig', ['postForm' => $form->createView()]);
     }
 }
