@@ -4,7 +4,7 @@ blog_register:
     defaults: { _controller: blog.controller.author.register:execute }
 
 # Страница входа
-blog.login:
+blog_login:
     path: /login
     defaults: { _controller: blog.controller.auth.login:execute }
 
