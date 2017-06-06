@@ -10,25 +10,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     libcurl4-gnutls-dev \
     libpq-dev \
-    libicu-dev
-
-RUN docker-php-ext-install \
+    libicu-dev \
+&& \
+    docker-php-ext-install \
     intl \
     curl \
     bcmath \
     gettext \
     mbstring \
-    pdo_pgsql
-
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/ \
-    && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
+    pdo_pgsql \
+&& \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+&& \
+   composer install --prefer-source --no-interaction && \
+   chown -R www-data:www-data /var/www/html
 
 WORKDIR /var/www/html
 
 COPY . ./
-
-RUN composer install --prefer-source --no-interaction && \
-    chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
