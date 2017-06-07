@@ -91,6 +91,11 @@ class UserServiceTest extends TestCase
             ->with($this->equalTo('some password'), $this->equalTo(null))
             ->willReturn('some encoded password');
 
+        $credentials
+            ->expects($this->once())
+            ->method('getLogin')
+            ->willReturn('some login');
+
         $this->userRepository
             ->expects($this->once())
             ->method('add')
@@ -103,6 +108,8 @@ class UserServiceTest extends TestCase
         $registeredUser = $this->userService->registerUser($credentials);
 
         $this->assertSame($expectedUser, $registeredUser);
+        $this->assertEquals('some encoded password', $registeredUser->getPassword());
+        $this->assertEquals('some login', $registeredUser->getLogin());
     }
 
     /**
