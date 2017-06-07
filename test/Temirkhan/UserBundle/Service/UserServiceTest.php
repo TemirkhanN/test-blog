@@ -57,7 +57,9 @@ class UserServiceTest extends TestCase
     {
         parent::tearDown();
 
-        $this->userService = null;
+        $this->userRepository  = null;
+        $this->passwordEncoder = null;
+        $this->userService     = null;
     }
 
     /**
