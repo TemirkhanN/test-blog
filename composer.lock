@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a85ca401458d424e24847138cb5c2e4",
+    "content-hash": "35cfd4d9c3b18dd2e609c90b18c05c68",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1976,16 +1976,49 @@
             "time": "2017-05-29T19:32:17+00:00"
         },
         {
+            "name": "temirkhan/flush-listener",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TemirkhanN/flush-listener.git",
+                "reference": "6fdf067b67a916c2e841295ecc373ea9b5aeae04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TemirkhanN/flush-listener/zipball/6fdf067b67a916c2e841295ecc373ea9b5aeae04",
+                "reference": "6fdf067b67a916c2e841295ecc373ea9b5aeae04",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "php": ">=7.0",
+                "symfony/symfony": ">=3.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Temirkhan\\FlushListenerBundle\\": "src/FlushListenerBundle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Entity manager flush listener",
+            "time": "2017-06-08T19:47:18+00:00"
+        },
+        {
             "name": "temirkhan/on-response-flush-listener",
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/TemirkhanN/onresponse-flush-listener.git",
+                "url": "https://github.com/TemirkhanN/flush-listener.git",
                 "reference": "a4f59e149b3adaf3d93c6bd267b7f7c748711392"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TemirkhanN/onresponse-flush-listener/zipball/a4f59e149b3adaf3d93c6bd267b7f7c748711392",
+                "url": "https://api.github.com/repos/TemirkhanN/flush-listener/zipball/a4f59e149b3adaf3d93c6bd267b7f7c748711392",
                 "reference": "a4f59e149b3adaf3d93c6bd267b7f7c748711392",
                 "shasum": ""
             },

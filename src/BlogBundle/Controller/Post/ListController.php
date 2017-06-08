@@ -45,22 +45,22 @@ class ListController extends AbstractController
      * @param PostSort   $postSort
      * @param PageFilter $pageFilter
      *
+     * @return Response
+     *
      * @Extra\ParamConverter("pageFilter");
      * @Extra\ParamConverter("postFilter")
      * @Extra\ParamConverter("postSort");
-     *
-     * @return Response
      */
-    public function execute(PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): Response
+    public function execute(PageFilter $pageFilter, PostFilter $postFilter, PostSort $postSort = null): Response
     {
-        $posts = $this->postService->getList($pageFilter, $postFilter, $postSort);
-        $total = $this->postService->count($postFilter);
+        $posts = $this->postService->getPosts($pageFilter, $postFilter, $postSort);
+        $total = $this->postService->getPostsCount($postFilter);
 
         return $this->respond('@Blog/post/common-list.html.twig', [
             'posts'       => $posts,
             'total'       => $total,
-            'currentPage' => $pageFilter->getPage(),
-            'onPage'      => $pageFilter->getCount(),
+            'pageFilter'  => $pageFilter,
+            'sort'        => $postSort,
         ]);
     }
 }

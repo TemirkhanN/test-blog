@@ -54,6 +54,7 @@ class RegisterController extends AbstractController
      * Регистрация автора
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function execute(Request $request): Response

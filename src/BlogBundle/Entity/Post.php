@@ -22,9 +22,6 @@ use Temirkhan\Blog\Entity\PostInterface;
  */
 class Post implements PostInterface
 {
-    const STATUS_DRAFT     = 'draft';
-    const STATUS_PUBLISHED = 'published';
-
     /**
      * Идентификатор
      *
@@ -244,13 +241,23 @@ class Post implements PostInterface
     }
 
     /**
-     * Возвращает статус
+     * Возвращает, в черновиках ли пост
      *
-     * @return string
+     * @return bool
      */
-    public function getStatus(): string
+    public function isDraft(): bool
     {
-        return $this->status;
+        return $this->status === self::STATUS_DRAFT;
+    }
+
+    /**
+     * Возвращает, опубликован ли пост
+     *
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        return $this->status === self::STATUS_PUBLISHED;
     }
 
     /**

@@ -111,8 +111,8 @@ class PostRepository implements PostRepositoryInterface
             return $sort;
         }
 
-        if ($addDateSort = $postSort->getAddDate()) {
-            $sort['addDate'] = $addDateSort;
+        if ($pubDateSort = $postSort->getPubDate()) {
+            $sort['pubDate'] = $pubDateSort;
         }
 
         return $sort;
@@ -133,8 +133,12 @@ class PostRepository implements PostRepositoryInterface
             return $criteria;
         }
 
-        if ($authorId = $postFilter->getAuthor()) {
-            $criteria['author'] = $authorId;
+        if ($author = $postFilter->getAuthor()) {
+            $criteria['author'] = $author;
+        }
+
+        if ($status = $postFilter->getStatus()) {
+            $criteria['status'] = $status;
         }
 
         return $criteria;

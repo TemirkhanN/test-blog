@@ -16,7 +16,7 @@ class PostSort
      *
      * @var string
      */
-    private $addDate = self::SORT_DESC;
+    private $pubDate = self::SORT_DESC;
 
     /**
      * Конструктор
@@ -37,7 +37,7 @@ class PostSort
             throw new Exception\InvalidArgumentException('Передан недопустимый аргумент');
         }
 
-        $this->addDate = $sortByAddDate;
+        $this->pubDate = $sortByAddDate;
     }
 
     /**
@@ -45,9 +45,9 @@ class PostSort
      *
      * @return string
      */
-    public function getAddDate(): string
+    public function getPubDate(): string
     {
-        return $this->addDate;
+        return $this->pubDate;
     }
 
     /**

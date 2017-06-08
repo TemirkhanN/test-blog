@@ -10,9 +10,18 @@ namespace Temirkhan\Blog\Filter;
 class PostFilter
 {
     /**
+     * Автор
+     *
      * @var string|null
      */
     private $author;
+
+    /**
+     * Статус
+     *
+     * @var string|null
+     */
+    private $status;
 
     /**
      * Конструктор
@@ -45,5 +54,25 @@ class PostFilter
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Возвращает статус
+     *
+     * @return null|string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Устанавливает статус
+     *
+     * @param null|string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 }

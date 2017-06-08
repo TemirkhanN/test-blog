@@ -1,5 +1,11 @@
 version: '2'
 services:
+  db:
+    image: sameersbn/postgresql
+    environment:
+      - DB_USER=blog
+      - DB_PASS=some_pass
+      - DB_NAME=blog_db
   frontend:
     image: nginx:alpine
     volumes:
@@ -7,20 +13,16 @@ services:
     ports:
       - "81:80"
     links:
-      - db
       - backend
     depends_on:
-      - db
       - backend
     command: sh -c "envsubst '' < /var/www/html/docker/blog-nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   backend:
     build: ./
     volumes:
       - ./:/var/www/html
-    command: sh -c "cd /var/www/html && composer install --prefer-source --no-interaction && rm -rf var/cache/* && chown -R www-data:www-data ./var && php-fpm -F"
-  db:
-    image: sameersbn/postgresql
-    environment:
-      - DB_USER=blog
-      - DB_PASS=some_pass
-      - DB_NAME=blog_db
+    links:
+      - db
+    depends_on:
+      - db
+    command: sh -c "chmod +x ./docker/wait-for-it.sh && ./docker/wait-for-it.sh"

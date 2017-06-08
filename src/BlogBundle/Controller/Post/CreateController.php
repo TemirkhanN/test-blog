@@ -74,7 +74,7 @@ class CreateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post = $this->postService->add($form->getData());
+            $post = $this->postService->addPost($form->getData());
 
             return $this->respondRedirect($this->router->generate('blog_post', ['post' => $post->getId()]));
         }

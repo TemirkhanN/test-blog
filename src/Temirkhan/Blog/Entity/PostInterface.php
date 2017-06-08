@@ -11,6 +11,9 @@ use DateTimeInterface;
  */
 interface PostInterface
 {
+    const STATUS_DRAFT     = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
     /**
      * Возвращает идентификатор
      *
@@ -54,11 +57,18 @@ interface PostInterface
     public function getTeaser(): string;
 
     /**
-     * Возвращает статус
+     * Возвращает, находится ли публикация в общем доступе
      *
-     * @return string
+     * @return bool
      */
-    public function getStatus(): string;
+    public function isPublished(): bool;
+
+    /**
+     * Возвращает, находится ли публикация в черновике
+     *
+     * @return bool
+     */
+    public function isDraft(): bool;
 
     /**
      * Возвращает автора

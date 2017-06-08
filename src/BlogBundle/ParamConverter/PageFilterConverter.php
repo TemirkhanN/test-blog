@@ -16,6 +16,23 @@ use Temirkhan\Blog\Filter\PageFilter;
 class PageFilterConverter implements ParamConverterInterface
 {
     /**
+     * Число элементов на страницу по-умолчанию
+     *
+     * @var int
+     */
+    private $defaultPageItemsCount;
+
+    /**
+     * Конструктор
+     *
+     * @param int $defaultPageItemsCount
+     */
+    public function __construct(int $defaultPageItemsCount)
+    {
+        $this->defaultPageItemsCount = $defaultPageItemsCount;
+    }
+
+    /**
      * Производит преобразование
      *
      * @param Request $request
@@ -34,7 +51,7 @@ class PageFilterConverter implements ParamConverterInterface
         }
 
         if (!$count) {
-            $count = 10;
+            $count = $this->defaultPageItemsCount;
         }
 
         $pageFilter = new PageFilter((int) $page, (int) $count);

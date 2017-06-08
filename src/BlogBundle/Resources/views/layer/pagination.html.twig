@@ -1,16 +1,16 @@
-{% if total > onPage %}
+{% if total > pageFilter.count %}
 
     {% set paginationParams = [] %}
-    {% set totalPages = (total/onPage)|round(0, 'ceil') %}
+    {% set totalPages = (total/pageFilter.count)|round(0, 'ceil') %}
     {% if totalPages > 1 %}
-        {% set fromPage = currentPage - 5 > 0 ? currentPage - 5 : 1 %}
-        {% set toPage   = currentPage + 5 < totalPages ? currentPage + 5 : totalPages %}
+        {% set fromPage = pageFilter.page - 5 > 0 ? pageFilter.page - 5 : 1 %}
+        {% set toPage   = pageFilter.page + 5 < totalPages ? pageFilter.page + 5 : totalPages %}
 
         <nav aria-label="Навигация">
             <p>Навигация</p>
             <ul class="pagination">
                 {% for i in fromPage..toPage %}
-                    {% if i == currentPage %}
+                    {% if i == pageFilter.page %}
                         <li class="active">
                             <a href="javascript:void(0)">{{ i }}</a>
                         </li>

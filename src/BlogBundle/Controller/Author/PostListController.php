@@ -42,30 +42,33 @@ class PostListController extends AbstractController
     /**
      * Просмотр публикаций автора
      *
-     * @param Author     $author
-     * @param PostFilter $postFilter
-     * @param PostSort   $postSort
-     * @param PageFilter $pageFilter
-     *
-     * @Extra\ParamConverter("pageFilter");
-     * @Extra\ParamConverter("postFilter")
-     * @Extra\ParamConverter("postSort");
+     * @param Author        $author
+     * @param PageFilter    $pageFilter
+     * @param PostFilter    $postFilter
+     * @param PostSort|null $postSort
      *
      * @return Response
+     *
+     * @Extra\ParamConverter("author")*
+     * @Extra\ParamConverter("pageFilter")
+     * @Extra\ParamConverter("postFilter")
+     * @Extra\ParamConverter("postSort")
      */
-    public function execute(Author $author, PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): Response
-    {
-        $postFilter->setAuthor($author->getId());
-
-        $posts = $this->postService->getList($pageFilter, $postFilter, $postSort);
-        $total = $this->postService->count($postFilter);
+    public function execute(
+        Author $author,
+        PageFilter $pageFilter,
+        PostFilter $postFilter,
+        PostSort $postSort = null
+    ): Response {
+        $posts = $this->postService->getAuthorPosts($author, $pageFilter, $postFilter, $postSort);
+        $total = $this->postService->getAuthorPostsCount($author, $postFilter);
 
         return $this->respond('@Blog/post/author-list.html.twig', [
             'author'      => $author,
             'posts'       => $posts,
             'total'       => $total,
-            'currentPage' => $pageFilter->getPage(),
-            'onPage'      => $pageFilter->getCount(),
+            'pageFilter'  => $pageFilter,
+            'sort'        => $postSort,
         ]);
     }
 }

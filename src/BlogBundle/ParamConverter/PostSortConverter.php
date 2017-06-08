@@ -47,7 +47,7 @@ class PostSortConverter implements ParamConverterInterface
     {
         $sort = $request->query->get('sort');
 
-        if (!$sort) {
+        if (!$sort || !is_array($sort)) {
             $sort = $this->defaultSort;
         }
 

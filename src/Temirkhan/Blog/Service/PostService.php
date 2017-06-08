@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Temirkhan\Blog\Service;
 
+use Temirkhan\Blog\Entity\AuthorInterface;
 use Temirkhan\Blog\Entity\PostInterface;
 use Temirkhan\Blog\Filter\PageFilter;
 use Temirkhan\Blog\Filter\PostFilter;
@@ -39,7 +40,7 @@ class PostService implements PostServiceInterface
      *
      * @return PostInterface
      */
-    public function add(PostInterface $post): PostInterface
+    public function addPost(PostInterface $post): PostInterface
     {
         $this->postRepository->add($post);
 
@@ -50,25 +51,61 @@ class PostService implements PostServiceInterface
      * Возвращает список публикаций
      *
      * @param PageFilter $pageFilter
-     * @param PostFilter|null $postFilter
+     * @param PostFilter|null $filter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getList(PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): array
+    public function getPosts(PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array
     {
-        return $this->postRepository->getList($pageFilter, $postFilter, $postSort);
+        $filter->setStatus(PostInterface::STATUS_PUBLISHED);
+
+        return $this->postRepository->getList($pageFilter, $filter, $postSort);
     }
 
     /**
      * Возвращает количество публикаций
      *
-     * @param PostFilter|null $filter
+     * @param PostFilter $filter
      *
      * @return int
      */
-    public function count(PostFilter $filter = null): int
+    public function getPostsCount(PostFilter $filter): int
     {
+        $filter->setStatus(PostInterface::STATUS_PUBLISHED);
+
         return $this->postRepository->count($filter);
+    }
+
+    /**
+     * Возвращает список публикаций автора
+     *
+     * @param AuthorInterface $author
+     * @param PageFilter      $pageFilter
+     * @param PostFilter      $filter
+     * @param PostSort|null   $postSort
+     *
+     * @return PostInterface[]
+     */
+    public function getAuthorPosts(AuthorInterface $author, PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array
+    {
+        $filter->setAuthor($author->getId());
+
+        return $this->getPosts($pageFilter, $filter, $postSort);
+    }
+
+    /**
+     * Возвращает количество публикаций автора
+     *
+     * @param AuthorInterface $author
+     * @param PostFilter $filter
+     *
+     * @return int
+     */
+    public function getAuthorPostsCount(AuthorInterface $author, PostFilter $filter): int
+    {
+        $filter->setAuthor($author->getId());
+
+        return $this->getPostsCount($filter);
     }
 }

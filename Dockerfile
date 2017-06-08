@@ -28,5 +28,5 @@ WORKDIR /var/www/html
 
 COPY . ./
 
-RUN composer install --prefer-source --no-interaction && \
+RUN composer install --prefer-source --no-interaction ; \
     chown -R www-data:www-data /var/www/html

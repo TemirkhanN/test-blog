@@ -16,7 +16,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new BlogBundle\BlogBundle(),
-            new Temirkhan\OnResponseFlushListenerBundle\TemirkhanOnResponseFlushListenerBundle(),
+            new Temirkhan\FlushListenerBundle\TemirkhanFlushListenerBundle(),
             new Temirkhan\UserBundle\UserBundle(),
         ];
 

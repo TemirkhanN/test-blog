@@ -1,0 +1,11 @@
+<div class="row">
+    {% if sortDirection == 'asc' %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'sort': {'pub_date': 'desc'} })) }}" class="btn btn-primary" title="Сортировать от новых к старым">
+            <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+        </a>
+    {% else %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'sort': {'pub_date': 'asc'} })) }}" class="btn btn-primary" title="Сортировать от старых к новым">
+            <span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
+        </a>
+    {% endif %}
+</div>
