@@ -8,7 +8,7 @@ use BlogBundle\Entity\Post;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Temirkhan\Blog\Entity\PostInterface;
-use Temirkhan\Blog\Filter\PageFilter;
+use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Repository\PostRepositoryInterface;
 use Temirkhan\Blog\Sort\PostSort;
@@ -48,13 +48,13 @@ class PostRepository implements PostRepositoryInterface
     /**
      * Возвращает список публикаций, удовлетворяющих условию
      *
-     * @param PageFilter      $pageFilter
+     * @param Page            $pageFilter
      * @param PostFilter|null $postFilter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getList(PageFilter $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): array
+    public function getList(Page $pageFilter, PostFilter $postFilter = null, PostSort $postSort = null): array
     {
         $criteria = $this->getCriteria($postFilter);
         $orderBy  = $this->getOrderBy($postSort);

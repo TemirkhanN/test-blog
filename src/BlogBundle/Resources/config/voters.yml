@@ -1,0 +1,8 @@
+services:
+    # Голосующий за право проведения действия над публикацией
+    blog.security.voter.post:
+        class: BlogBundle\Security\PostVoter
+        arguments:
+            - '@blog.service.author'
+        tags:
+            - { name: security.voter }

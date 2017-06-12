@@ -1,0 +1,18 @@
+services:
+    # Инъектор текущего автора в параметры запроса
+    blog.event.listener.current_author_inject:
+        class: BlogBundle\EventListener\InjectCurrentAuthorListener
+        arguments:
+             - '@security.token_storage'
+             - '@blog.service.author'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+    # Инъектор текущей страницы в параметры запроса
+    blog.event.listener.current_page_inject:
+        class: BlogBundle\EventListener\InjectCurrentPageListener
+        arguments:
+            - '%default_per_page_posts_count%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

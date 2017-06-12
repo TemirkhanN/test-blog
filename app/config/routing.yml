@@ -1,2 +1,4 @@
 blog:
     resource: "@BlogBundle/Resources/config/routing.yml"
+logout:
+    path: /logout

@@ -24,12 +24,11 @@ class ViewController extends AbstractController
      * @return Response
      *
      * @Extra\ParamConverter("post", class="BlogBundle:Post")
-     * @Extra\ParamConverter("currentAuthor")
+     *
+     * @Extra\Security("is_granted('view', post)")
      */
     public function execute(PostInterface $post, Author $currentAuthor): Response
     {
-        $isOwner = $post->isPublishedBy($currentAuthor);
-
-        return $this->respond('@Blog/post/common-item.html.twig', ['post' => $post, 'isOwner' => $isOwner]);
+        return $this->respond('@Blog/post/common-item.html.twig', ['post' => $post, 'currentAuthor' => $currentAuthor]);
     }
 }

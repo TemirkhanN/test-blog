@@ -100,6 +100,8 @@ class Author implements AuthorInterface
     }
 
     /**
+     * Возвращает дату регистрации
+     *
      * @return DateTimeInterface
      */
     public function getRegistrationDate(): DateTimeInterface

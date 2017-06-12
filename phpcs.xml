@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset name="CS">
-    <description>Coding standard</description>
+    <description>Code-style rules</description>
     <arg value="wsp"/>
     <arg name="colors"/>
     <arg name="encoding" value="utf-8"/>

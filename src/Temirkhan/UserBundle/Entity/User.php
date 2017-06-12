@@ -12,8 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Пользователь
  *
  * @ORM\Entity()
- * @ORM\Table(name="`user`", indexes={
- *     @ORM\Index(name="user_login_idx", columns={"login"})
+ * @ORM\Table(name="`user`",         indexes={
+ * @ORM\Index(name="user_login_idx", columns={"login"})
  * })
  */
 class User implements UserInterface
@@ -221,6 +221,5 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        return;
     }
 }

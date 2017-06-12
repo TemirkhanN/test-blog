@@ -31,7 +31,7 @@ class RegistrationCredentials
      */
     public function __construct(string $login, string $password)
     {
-        $this->login = $login;
+        $this->login    = $login;
         $this->password = $password;
     }
 

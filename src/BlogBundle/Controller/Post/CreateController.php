@@ -51,8 +51,8 @@ class CreateController extends AbstractController
     ) {
         parent::__construct($engine);
 
-        $this->formFactory   = $formFactory;
-        $this->postService   = $postService;
+        $this->formFactory = $formFactory;
+        $this->postService = $postService;
     }
 
     /**

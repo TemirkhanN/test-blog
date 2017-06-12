@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Temirkhan\Blog\Filter;
 
 /**
- * Постраничный фильтр
+ * Страница
  */
-class PageFilter
+class Page
 {
     /**
-     * Текущая страница
+     * Номер страницы
      *
      * @var int
      */
@@ -30,15 +30,31 @@ class PageFilter
      */
     private $offset;
 
+    /**
+     * Конструктор
+     *
+     * @param int $page
+     * @param int $count
+     *
+     * @throws Exception\InvalidArgumentException
+     */
     public function __construct(int $page, int $count)
     {
+        if ($page < 1) {
+            throw new Exception\InvalidArgumentException('Некорректный номер страницы');
+        }
+
+        if ($count < 1) {
+            throw new Exception\InvalidArgumentException('Некорректное число элементов на страницу');
+        }
+
         $this->page   = $page;
         $this->count  = $count;
-        $this->offset = ($page-1) * $count;
+        $this->offset = ($page - 1) * $count;
     }
 
     /**
-     * Возвращает текущую страницу
+     * Возвращает номер страницы
      *
      * @return int
      */

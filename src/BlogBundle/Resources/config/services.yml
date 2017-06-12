@@ -1,7 +1,12 @@
 imports:
     - { resource: controllers.yml }
-    - { resource: repositories.yml }
+    - { resource: event-listeners.yml }
     - { resource: param-converters.yml }
+    - { resource: repositories.yml }
+    - { resource: voters.yml }
+parameters:
+    # Число публикаций на страницу
+    default_per_page_posts_count: 5
 
 services:
     # Сервис авторов

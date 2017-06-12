@@ -14,9 +14,9 @@ interface AuthorInterface
     /**
      * Возвращает идентификатор
      *
-     * @return string|int
+     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Возвращает имя

@@ -8,6 +8,7 @@ use BlogBundle\Controller\AbstractController;
 use BlogBundle\Controller\RouterAwareTrait;
 use BlogBundle\Form\RegistrationType;
 use BlogBundle\Service\AuthorService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,12 +39,15 @@ class RegisterController extends AbstractController
     /**
      * Конструктор
      *
-     * @param EngineInterface $engine
+     * @param EngineInterface      $engine
      * @param FormFactoryInterface $formFactory
-     * @param AuthorService $authorService
+     * @param AuthorService        $authorService
      */
-    public function __construct(EngineInterface $engine, FormFactoryInterface $formFactory, AuthorService $authorService)
-    {
+    public function __construct(
+        EngineInterface $engine,
+        FormFactoryInterface $formFactory,
+        AuthorService $authorService
+    ) {
         parent::__construct($engine);
 
         $this->formFactory   = $formFactory;
@@ -56,6 +60,8 @@ class RegisterController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     *
+     * @Security("!is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function execute(Request $request): Response
     {
@@ -63,12 +69,12 @@ class RegisterController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->authorService->registerAuthor($form->getData());
 
                 return $this->respondRedirect($this->router->generate('blog.login'));
-            } catch(Throwable $e) {
+            } catch (Throwable $e) {
                 $this->addFlashError('Произошла непредвиденная ошибка');
             }
         }

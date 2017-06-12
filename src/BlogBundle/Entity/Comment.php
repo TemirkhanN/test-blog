@@ -11,26 +11,28 @@ use Temirkhan\Blog\Entity\CommentInterface;
  * Комментарий
  *
  * @ORM\Entity()
- * @ORM\Table(name="comment",
- *      indexes={
- *          @Index(name="author_idx", columns={"author_id"}),
- *          @Index(name="post_idx", columns={"post_id"}),
- *      }
- * )
+ * @ORM\Table(name="comment", indexes={
+ *     @Index(name="author_idx", columns={"author_id"}),
+ *     @Index(name="post_idx", columns={"post_id"})
+ * })
  */
 class Comment implements CommentInterface
 {
     /**
      * Идентификатор
      *
-     * @ORM\Column(type="integer", options={"unsigned":true})
-     * @ORM\Id
+     * @var int
+     *
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer", options={"unsigned": true})
      */
     private $id = 0;
 
     /**
      * Комментируемая публикация
+     *
+     * @var Post
      *
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
@@ -39,6 +41,8 @@ class Comment implements CommentInterface
 
     /**
      * Автор
+     *
+     * @var Author
      *
      * @ORM\ManyToOne(targetEntity="Author")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
@@ -49,12 +53,16 @@ class Comment implements CommentInterface
     /**
      * Текст комментария
      *
+     * @var string
+     *
      * @ORM\Column(name="content", type="text", length=3000)
      */
-    private $content;
+    private $content = '';
 
     /**
      * Дата добавления комментария
+     *
+     * @var DateTime
      *
      * @ORM\Column(name="add_date", type="datetime")
      */
@@ -108,7 +116,7 @@ class Comment implements CommentInterface
      *
      * @return Post
      */
-    public function getPost()
+    public function getPost(): Post
     {
         return $this->post;
     }

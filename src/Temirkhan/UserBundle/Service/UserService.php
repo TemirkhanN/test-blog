@@ -31,7 +31,7 @@ class UserService
     /**
      * Конструктор
      *
-     * @param UserRepository $userRepository
+     * @param UserRepository          $userRepository
      * @param EncoderFactoryInterface $passwordEncoder
      */
     public function __construct(UserRepository $userRepository, EncoderFactoryInterface $passwordEncoder)

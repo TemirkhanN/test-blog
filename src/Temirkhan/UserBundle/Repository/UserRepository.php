@@ -52,7 +52,7 @@ class UserRepository
      */
     public function findAll(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
-        // TODO: Implement findBy() method.
+        return [];
     }
 
     /**
@@ -64,12 +64,7 @@ class UserRepository
      */
     public function findOne(array $criteria)
     {
-        /**
-         * @var User|null $user
-         */
-        $user = $this->getRepository()->findOneBy($criteria);
-
-        return $user;
+        return $this->getRepository()->findOneBy($criteria);
     }
 
     /**

@@ -16,6 +16,7 @@
     </style>
 {% endblock %}
 
+{% set isOwner = post.isPublishedBy(currentAuthor) %}
 {% block body %}
     <div class="container">
 
@@ -31,7 +32,7 @@
             {% if isOwner %}
                 <div class="post-manipulation">
                     <a href="{{ path('edit_post', {'postId': post.id}) }}">Редактировать</a>
-                    {% if post.status == constant('BlogBundle\\Entity\\Post::STATUS_DRAFT') %}
+                    {% if post.isDraft() and post.isPublishedBy(currentAuthor) %}
                         <br>
                         <a style="color:green;" href="{{ path('publish_post', {'postId': post.id}) }}">Опубликовать</a><br>
                         <a style="color:red;" href="{{ path('delete_post', {'postId': post.id}) }}">Удалить</a>

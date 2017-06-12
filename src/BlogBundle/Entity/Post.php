@@ -309,7 +309,7 @@ class Post implements PostInterface
      */
     public function isPublishedBy(AuthorInterface $author): bool
     {
-        if ($this->author->getId() === $author->getId()){
+        if ($this->author->getId() === $author->getId()) {
             return true;
         }
 

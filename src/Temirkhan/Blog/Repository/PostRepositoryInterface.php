@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Temirkhan\Blog\Repository;
 
 use Temirkhan\Blog\Entity\PostInterface;
-use Temirkhan\Blog\Filter\PageFilter;
+use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Sort\PostSort;
 
@@ -24,13 +24,13 @@ interface PostRepositoryInterface
     /**
      * Возвращает список публикаций
      *
-     * @param PageFilter      $pageFilter
+     * @param Page            $pageFilter
      * @param PostFilter|null $filter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getList(PageFilter $pageFilter, PostFilter $filter = null, PostSort $postSort = null): array;
+    public function getList(Page $pageFilter, PostFilter $filter = null, PostSort $postSort = null): array;
 
     /**
      * Возвращает количество публикаций

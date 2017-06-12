@@ -6,7 +6,7 @@ namespace Temirkhan\Blog\Service;
 
 use Temirkhan\Blog\Entity\AuthorInterface;
 use Temirkhan\Blog\Entity\PostInterface;
-use Temirkhan\Blog\Filter\PageFilter;
+use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Sort\PostSort;
 
@@ -27,25 +27,30 @@ interface PostServiceInterface
     /**
      * Возвращает список публикаций
      *
-     * @param PageFilter      $pageFilter
-     * @param PostFilter $filter
-     * @param PostSort|null   $postSort
+     * @param Page          $pageFilter
+     * @param PostFilter    $filter
+     * @param PostSort|null $postSort
      *
      * @return PostInterface[]
      */
-    public function getPosts(PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array;
+    public function getPosts(Page $pageFilter, PostFilter $filter, PostSort $postSort = null): array;
 
     /**
      * Возвращает список публикаций автора
      *
      * @param AuthorInterface $author
-     * @param PageFilter      $pageFilter
+     * @param Page            $pageFilter
      * @param PostFilter      $filter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getAuthorPosts(AuthorInterface $author, PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array;
+    public function getAuthorPosts(
+        AuthorInterface $author,
+        Page $pageFilter,
+        PostFilter $filter,
+        PostSort $postSort = null
+    ): array;
 
     /**
      * Возвращает количество публикаций
@@ -60,7 +65,7 @@ interface PostServiceInterface
      * Возвращает количество публикаций автора
      *
      * @param AuthorInterface $author
-     * @param PostFilter $filter
+     * @param PostFilter      $filter
      *
      * @return int
      */

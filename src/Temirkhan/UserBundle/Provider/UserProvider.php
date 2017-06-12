@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Temirkhan\UserBundle\Provider;
 
-
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -39,10 +38,12 @@ class UserProvider implements UserProviderInterface
      * @param string $username
      *
      * @return UserInterface
+     *
+     * @throws UsernameNotFoundException
      */
     public function loadUserByUsername($username)
     {
-        $user =$this->userRepository->findOne(['login' => $username]);
+        $user = $this->userRepository->findOne(['login' => $username]);
 
         if (!$user) {
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
@@ -54,7 +55,7 @@ class UserProvider implements UserProviderInterface
     /**
      * Обновляет пользователя
      *
-     * @param UserInterface  $user
+     * @param UserInterface $user
      *
      * @return UserInterface
      */

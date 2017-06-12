@@ -26,7 +26,7 @@ class RegistrationType extends AbstractType implements DataMapperInterface
      * Инициализация формы
      *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -68,7 +68,7 @@ class RegistrationType extends AbstractType implements DataMapperInterface
     /**
      * Устанавливает данные в форму
      *
-     * @param mixed $data
+     * @param mixed           $data
      * @param FormInterface[] $forms
      */
     public function mapDataToForms($data, $forms)
@@ -87,7 +87,7 @@ class RegistrationType extends AbstractType implements DataMapperInterface
      * Устанавливает данные из формы
      *
      * @param FormInterface[] $forms
-     * @param mixed $data
+     * @param mixed           $data
      */
     public function mapFormsToData($forms, &$data)
     {

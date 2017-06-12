@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace BlogBundle\ParamConverter;
 
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,7 @@ class PostFilterConverter implements ParamConverterInterface
     /**
      * Производит преобразование параметров
      *
-     * @param Request $request
+     * @param Request        $request
      * @param ParamConverter $configuration
      *
      * @return bool

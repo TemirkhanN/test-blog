@@ -1,24 +1,7 @@
 parameters:
     default_post_sort:
         pub_date: !php/const:Temirkhan\Blog\Sort\PostSort::SORT_ASC
-    default_per_page_posts_count: 5
 services:
-    # Конвертер текущего автора
-    blog.paramconverter.author.current:
-        class: BlogBundle\ParamConverter\CurrentAuthorParamConverter
-        arguments:
-            - '@security.token_storage'
-            - '@blog.service.author'
-        tags:
-            - { name: request.param_converter }
-    # Конвертер постраничного фильтра
-    blog.paramconverter.page_filter:
-        class: BlogBundle\ParamConverter\PageFilterConverter
-        arguments:
-            - '%default_per_page_posts_count%'
-        tags:
-            - { name: request.param_converter }
-
     # Конвертер фильтра публикаций
     blog.paramconverter.post_filter:
         class: BlogBundle\ParamConverter\PostFilterConverter

@@ -39,11 +39,14 @@ class AuthService
      * Конструктор
      *
      * @param AuthenticationProviderInterface $authenticationProvider
-     * @param string $providerKey
-     * @param TokenStorageInterface $tokenStorage
+     * @param string                          $providerKey
+     * @param TokenStorageInterface           $tokenStorage
      */
-    public function __construct(AuthenticationProviderInterface $authenticationProvider, string $providerKey, TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        AuthenticationProviderInterface $authenticationProvider,
+        string $providerKey,
+        TokenStorageInterface $tokenStorage
+    ) {
         $this->authenticator = $authenticationProvider;
         $this->providerKey   = $providerKey;
         $this->tokenStorage  = $tokenStorage;

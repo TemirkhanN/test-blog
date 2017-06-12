@@ -6,6 +6,7 @@ namespace BlogBundle\Controller\Auth;
 
 use BlogBundle\Controller\AbstractController;
 use BlogBundle\Controller\RouterAwareTrait;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,16 +39,16 @@ class LoginController extends AbstractController
     /**
      * Конструктор
      *
-     * @param EngineInterface       $engine
-     * @param AuthService $authService
-     * @param FormFactory           $formFactory
+     * @param EngineInterface $engine
+     * @param AuthService     $authService
+     * @param FormFactory     $formFactory
      */
     public function __construct(EngineInterface $engine, AuthService $authService, FormFactory $formFactory)
     {
         parent::__construct($engine);
 
-        $this->authService  = $authService;
-        $this->formFactory  = $formFactory;
+        $this->authService = $authService;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -56,6 +57,8 @@ class LoginController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     *
+     * @Security("!is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function execute(Request $request): Response
     {

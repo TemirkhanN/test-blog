@@ -43,21 +43,17 @@ class LoginType extends AbstractType implements DataMapperInterface
         ]);
 
         $builder->add('password', PasswordType::class, [
-            'constraints' => [
-                new NotBlank(['message' => 'Не указан пароль'])
-            ],
+            'constraints' => [new NotBlank(['message' => 'Не указан пароль'])],
             'empty_data'  => '',
         ]);
 
-        $builder->add('submit', SubmitType::class, [
-            'label' => 'Войти',
-        ]);
+        $builder->add('submit', SubmitType::class, ['label' => 'Войти']);
     }
 
     /**
      * Заполняет форму данными
      *
-     * @param mixed                                   $data
+     * @param mixed           $data
      * @param FormInterface[] $forms
      */
     public function mapDataToForms($data, $forms)
@@ -76,7 +72,7 @@ class LoginType extends AbstractType implements DataMapperInterface
      * Заполняет объект данными из формы
      *
      * @param FormInterface[] $forms
-     * @param mixed                                   $data
+     * @param mixed           $data
      */
     public function mapFormsToData($forms, &$data)
     {

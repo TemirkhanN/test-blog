@@ -6,7 +6,7 @@ namespace Temirkhan\Blog\Service;
 
 use Temirkhan\Blog\Entity\AuthorInterface;
 use Temirkhan\Blog\Entity\PostInterface;
-use Temirkhan\Blog\Filter\PageFilter;
+use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Repository\PostRepositoryInterface;
 use Temirkhan\Blog\Sort\PostSort;
@@ -50,13 +50,13 @@ class PostService implements PostServiceInterface
     /**
      * Возвращает список публикаций
      *
-     * @param PageFilter $pageFilter
+     * @param Page            $pageFilter
      * @param PostFilter|null $filter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getPosts(PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array
+    public function getPosts(Page $pageFilter, PostFilter $filter, PostSort $postSort = null): array
     {
         $filter->setStatus(PostInterface::STATUS_PUBLISHED);
 
@@ -81,14 +81,18 @@ class PostService implements PostServiceInterface
      * Возвращает список публикаций автора
      *
      * @param AuthorInterface $author
-     * @param PageFilter      $pageFilter
+     * @param Page            $pageFilter
      * @param PostFilter      $filter
      * @param PostSort|null   $postSort
      *
      * @return PostInterface[]
      */
-    public function getAuthorPosts(AuthorInterface $author, PageFilter $pageFilter, PostFilter $filter, PostSort $postSort = null): array
-    {
+    public function getAuthorPosts(
+        AuthorInterface $author,
+        Page $pageFilter,
+        PostFilter $filter,
+        PostSort $postSort = null
+    ): array {
         $filter->setAuthor($author->getId());
 
         return $this->getPosts($pageFilter, $filter, $postSort);
@@ -98,7 +102,7 @@ class PostService implements PostServiceInterface
      * Возвращает количество публикаций автора
      *
      * @param AuthorInterface $author
-     * @param PostFilter $filter
+     * @param PostFilter      $filter
      *
      * @return int
      */

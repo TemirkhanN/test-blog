@@ -8,7 +8,7 @@ use BlogBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Temirkhan\Blog\Filter\PageFilter;
+use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Service\PostServiceInterface;
 use Temirkhan\Blog\Sort\PostSort;
@@ -41,26 +41,25 @@ class ListController extends AbstractController
     /**
      * Просмотр публикаций
      *
+     * @param Page       $page
      * @param PostFilter $postFilter
      * @param PostSort   $postSort
-     * @param PageFilter $pageFilter
      *
      * @return Response
      *
-     * @Extra\ParamConverter("pageFilter");
      * @Extra\ParamConverter("postFilter")
      * @Extra\ParamConverter("postSort");
      */
-    public function execute(PageFilter $pageFilter, PostFilter $postFilter, PostSort $postSort = null): Response
+    public function execute(Page $page, PostFilter $postFilter, PostSort $postSort = null): Response
     {
-        $posts = $this->postService->getPosts($pageFilter, $postFilter, $postSort);
+        $posts = $this->postService->getPosts($page, $postFilter, $postSort);
         $total = $this->postService->getPostsCount($postFilter);
 
         return $this->respond('@Blog/post/common-list.html.twig', [
-            'posts'       => $posts,
-            'total'       => $total,
-            'pageFilter'  => $pageFilter,
-            'sort'        => $postSort,
+            'posts' => $posts,
+            'total' => $total,
+            'page'  => $page,
+            'sort'  => $postSort,
         ]);
     }
 }

@@ -33,7 +33,7 @@ class AuthorService
     /**
      * Конструктор
      *
-     * @param UserService $userService
+     * @param UserService      $userService
      * @param AuthorRepository $authorRepository
      */
     public function __construct(UserService $userService, AuthorRepository $authorRepository)
@@ -42,6 +42,13 @@ class AuthorService
         $this->authorRepository = $authorRepository;
     }
 
+    /**
+     * Регистрирует автора в системе
+     *
+     * @param RegistrationCredentials $registrationCredentials
+     *
+     * @return Author
+     */
     public function registerAuthor(RegistrationCredentials $registrationCredentials): Author
     {
         $user = $this->userService->registerUser($registrationCredentials);
