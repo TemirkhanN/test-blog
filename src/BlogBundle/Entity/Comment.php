@@ -10,10 +10,12 @@ use Temirkhan\Blog\Entity\CommentInterface;
 /**
  * Комментарий
  *
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="comment", indexes={
- *     @Index(name="author_idx", columns={"author_id"}),
- *     @Index(name="post_idx", columns={"post_id"})
+ *
+ * @Index(name="author_idx", columns={"author_id"}),
+ * @Index(name="post_idx",   columns={"post_id"})
+ *
  * })
  */
 class Comment implements CommentInterface
@@ -24,7 +26,9 @@ class Comment implements CommentInterface
      * @var int
      *
      * @ORM\Id()
+     *
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @ORM\Column(type="integer", options={"unsigned": true})
      */
     private $id = 0;
@@ -35,6 +39,7 @@ class Comment implements CommentInterface
      * @var Post
      *
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
+     *
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     private $post;
@@ -45,6 +50,7 @@ class Comment implements CommentInterface
      * @var Author
      *
      * @ORM\ManyToOne(targetEntity="Author")
+     *
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;

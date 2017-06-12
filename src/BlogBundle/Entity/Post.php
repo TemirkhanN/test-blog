@@ -28,7 +28,9 @@ class Post implements PostInterface
      * @var int
      *
      * @ORM\Id
+     *
      * @ORM\Column(type="integer", options={"unsigned":true})
+     *
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id = 0;
@@ -39,6 +41,7 @@ class Post implements PostInterface
      * @var AuthorInterface
      *
      * @ManyToOne(targetEntity="Author")
+     *
      * @JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
@@ -103,6 +106,7 @@ class Post implements PostInterface
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     *
      * @OrderBy({"addDate"="DESC"})
      */
     private $comments;
