@@ -76,6 +76,6 @@ class LoginController extends AbstractController
             }
         }
 
-        return $this->respond('@Blog/author/login.html.twig', ['login_form' => $loginForm->createView()]);
+        return $this->respond('@Blog/author/login.html.twig', ['loginForm' => $loginForm->createView()]);
     }
 }

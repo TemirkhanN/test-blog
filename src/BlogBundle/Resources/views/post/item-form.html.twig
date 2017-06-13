@@ -3,9 +3,13 @@
 {% block stylesheet %}
     {{ parent() }}
     <style>
-        form[name=post]{
+        .post-form {
             width:50%;
             margin:20px auto 40px;
+        }
+
+        .post-form .form-control {
+            margin-bottom: 5px;
         }
     </style>
 {% endblock %}
@@ -14,8 +18,11 @@
 
     {% include '@Blog/layer/flash-errors.html.twig' %}
 
-    {{ form_start(postForm) }}
-    {{ form_widget(postForm) }}
+    {{ form_start(postForm, {'attr': {'class': 'form-group post-form'}}) }}
+    {{ form_widget(postForm.title, {'attr':{'class': 'form-control', 'placeholder': 'Заголовок'}}) }}
+    {{ form_widget(postForm.teaser, {'attr':{'class': 'form-control', 'placeholder': 'Тизер'}}) }}
+    {{ form_widget(postForm.content, {'attr':{'class': 'form-control', 'placeholder': 'Контент'}}) }}
+    {{ form_widget(postForm.add, {'attr':{'class': 'btn btn-md btn-success'}, 'name': 'Добавить'}) }}
     {{ form_end(postForm) }}
 
 {% endblock %}

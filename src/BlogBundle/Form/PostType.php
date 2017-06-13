@@ -50,7 +50,7 @@ class PostType extends AbstractType
                     new Length(['max' => 3000, 'maxMessage' => 'Публикация не может быть длиннее {limit} символов']),
                 ],
             ])
-            ->add('Сохранить', SubmitType::class);
+            ->add('add', SubmitType::class);
     }
 
     /**

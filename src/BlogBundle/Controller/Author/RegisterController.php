@@ -79,6 +79,6 @@ class RegisterController extends AbstractController
             }
         }
 
-        return $this->respond('@Blog/author/register.html.twig', ['registration_form' => $form->createView()]);
+        return $this->respond('@Blog/author/register.html.twig', ['registrationForm' => $form->createView()]);
     }
 }

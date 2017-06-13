@@ -34,6 +34,7 @@
     <div class="container">
 
         {% if posts|length %}
+            <h1 align="center">Список публикаций</h1>
             {% include '@Blog/layer/sort.html.twig' with {'sortDirection': sort.pubDate} only %}
             <div class="row posts-list">
                 {% for post in posts %}
@@ -50,7 +51,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <h2 align="center">Публикации не найдены</h2>
+            <h1 align="center">Публикации не найдены</h1>
         {% endif %}
 
         {% include '@Blog/layer/pagination.html.twig' %}

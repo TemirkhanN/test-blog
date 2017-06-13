@@ -47,7 +47,7 @@ class LoginType extends AbstractType implements DataMapperInterface
             'empty_data'  => '',
         ]);
 
-        $builder->add('submit', SubmitType::class, ['label' => 'Войти']);
+        $builder->add('signIn', SubmitType::class);
     }
 
     /**

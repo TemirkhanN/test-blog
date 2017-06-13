@@ -34,22 +34,16 @@
             box-sizing: border-box;
             padding: 10px;
             font-size: 16px;
+            margin-bottom: 5px;
         }
 
         .registration-form .form-control:focus {
             z-index: 2;
         }
 
-        .registration-form input[type="email"] {
-            margin-bottom: -1px;
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .registration-form input[type="password"] {
-            margin-bottom: 10px;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
+        .registration-form button{
+            margin-top: 5px;
+            width: 100%;
         }
     </style>
 {% endblock %}
@@ -58,8 +52,12 @@
 {% block body %}
     {% include "@Blog/layer/flash-errors.html.twig" %}
 
-    {{ form_start(registration_form) }}
-    {{ form_errors(registration_form) }}
-    {{ form_widget(registration_form, {'attr':{'class': 'registration-form'}}) }}
-    {{ form_end(registration_form) }}
+    {{ form_start(registrationForm, {'attr':{'class': 'registration-form'}}) }}
+    {{ form_errors(registrationForm) }}
+
+    {{ form_widget(registrationForm.name, {'attr':{'class': 'form-control', 'placeholder': 'Имя'}}) }}
+    {{ form_widget(registrationForm.login, {'attr':{'class': 'form-control', 'placeholder': 'Логин'}}) }}
+    {{ form_widget(registrationForm.password, {'attr':{'class': 'form-control', 'placeholder': 'Пароль'}}) }}
+    {{ form_widget(registrationForm.signUp, {'attr':{'class': 'btn btn-md btn-success'}, 'name': 'Зарегистрироваться'}) }}
+    {{ form_end(registrationForm) }}
 {% endblock %}

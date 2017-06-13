@@ -62,7 +62,7 @@ class RegistrationType extends AbstractType implements DataMapperInterface
             ],
         ]);
 
-        $builder->add('register', SubmitType::class);
+        $builder->add('signUp', SubmitType::class);
     }
 
     /**
