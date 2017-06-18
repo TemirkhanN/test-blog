@@ -23,9 +23,11 @@ class Author implements AuthorInterface
      *
      * @var int
      *
-     * @ORM\Column(type="integer", options={"unsigned":true})
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id
+     *
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id = 0;
 
@@ -44,6 +46,7 @@ class Author implements AuthorInterface
      * @var User
      *
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
      * @ORM\OneToOne(targetEntity="Temirkhan\UserBundle\Entity\User", orphanRemoval=true)
      */
     private $user;
