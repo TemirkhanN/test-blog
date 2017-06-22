@@ -16,7 +16,6 @@ use Temirkhan\Blog\Sort\Exception\InvalidArgumentException;
  */
 class PostSortTest extends TestCase
 {
-
     /**
      * Сортировки по дате по умолчанию
      */
