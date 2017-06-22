@@ -12,7 +12,7 @@ class PostFilter
     /**
      * Автор
      *
-     * @var string|null
+     * @var int|null
      */
     private $author;
 
@@ -34,7 +34,7 @@ class PostFilter
             return;
         }
 
-        $this->author = (string) $filter['author'];
+        $this->author = (int) $filter['author'];
     }
 
     /**
@@ -44,8 +44,9 @@ class PostFilter
      */
     public function setAuthor(int $id)
     {
-        $this->author = (string) $id;
+        $this->author = $id;
     }
+
     /**
      * Возвращает автора
      *
