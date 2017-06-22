@@ -5,56 +5,56 @@ namespace Temirkhan\Blog\Filter;
 use PHPUnit\Framework\TestCase;
 use Temirkhan\Blog\Filter\Exception\InvalidArgumentException;
 
+/**
+ * Тесты фильтра страницы
+ */
 class PageTest extends TestCase
 {
-
     /**
-     * Проверяем валидность аргумента "номер страницы"
+     * Поведение при не корректном номере страницы
      */
-    public function testArgumentPageException()
+    public function testInvalidPage() : void
     {
         $this->expectException(InvalidArgumentException::class);
         new Page(-1, 1);
     }
 
     /**
-     * Проверяем валидность аргумента "элементов на странице"
+     * Поведение при не корректном количестве записей на страницу
      */
-    public function testCountArgument()
+    public function testInvalidCount() : void
     {
         $this->expectException(InvalidArgumentException::class);
         new Page(1, -1);
     }
 
     /**
-     * Проверка метода получения номера страницы
+     * Получение номера страницы
      */
-    public function testGetPage()
+    public function testPage() : void
     {
-        $page = new Page(5, 100);
+        $page = new Page(3, 6);
 
-        $this->assertEquals(5, $page->getPage());
+        $this->assertEquals(3, $page->getPage());
     }
 
     /**
-     * Проверка метода для получения количества записей
+     * Получение количества записей
      */
-    public function testGetCount()
+    public function testCount() : void
     {
-        $page = new Page(5, 100);
+        $page = new Page(3, 6);
 
-        $this->assertEquals(100, $page->getCount());
+        $this->assertEquals(6, $page->getCount());
     }
 
     /**
-     * Проверка сдига по элементам
+     * Получение сдвига по элементам
      */
-    public function testGetOffset()
+    public function testOffset() : void
     {
-        $page = new Page(5, 100);
+        $page = new Page(3, 6);
 
-        $this->assertEquals(400, $page->getOffset());
+        $this->assertEquals(12, $page->getOffset());
     }
-
-
 }
