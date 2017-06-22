@@ -13,7 +13,7 @@ use Temirkhan\Blog\Filter\Exception\InvalidArgumentException;
 class PageTest extends TestCase
 {
     /**
-     * Поведение при не корректном номере страницы
+     * Поведение при некорректном номере страницы
      */
     public function testInvalidPage(): void
     {
@@ -22,7 +22,7 @@ class PageTest extends TestCase
     }
 
     /**
-     * Поведение при не корректном количестве записей на страницу
+     * Поведение при некорректном количестве записей на страницу
      */
     public function testInvalidCount(): void
     {
