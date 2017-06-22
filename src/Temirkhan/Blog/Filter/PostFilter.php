@@ -62,7 +62,7 @@ class PostFilter
      *
      * @return null|string
      */
-    public function getStatus(): string
+    public function getStatus()
     {
         return $this->status;
     }

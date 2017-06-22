@@ -11,9 +11,8 @@ use PHPUnit\Framework\TestCase;
  */
 class PostFilterTest extends TestCase
 {
-
     /**
-     * Проверка фильтрации при отсутствии автора
+     * Проверка фильтра при отсутствии автора
      */
     public function testFilterIfAuthorNotExists(): void
     {
@@ -37,13 +36,16 @@ class PostFilterTest extends TestCase
     }
 
     /**
-     * Проверка установки автора
+     * Проверка установки фильтра по автору
      */
     public function testSetAuthor(): void
     {
         $author = 1;
 
         $post = new PostFilter([]);
+
+        $this->assertEquals(null, $post->getAuthor());
+
         $post->setAuthor($author);
 
         $this->assertEquals($author, $post->getAuthor());
@@ -57,6 +59,9 @@ class PostFilterTest extends TestCase
         $status = 'some status';
 
         $post = new PostFilter([]);
+
+        $this->assertEquals(null, $post->getStatus());
+
         $post->setStatus($status);
 
         $this->assertEquals($status, $post->getStatus());
