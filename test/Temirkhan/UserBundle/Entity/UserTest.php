@@ -124,6 +124,8 @@ class UserTest extends TestCase
      */
     public function testEraseCredentials(): void
     {
-        $this->assertNull($this->user->eraseCredentials());
+        $this->user->eraseCredentials();
+
+        $this->assertEquals(new User(), $this->user);
     }
 }
