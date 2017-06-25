@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Temirkhan\Blog\Filter;
 
 use PHPUnit\Framework\TestCase;
-use Temirkhan\Blog\Filter\Exception\InvalidArgumentException;
 
 /**
  * Тесты фильтра страницы
@@ -17,7 +16,7 @@ class PageTest extends TestCase
      */
     public function testInvalidPage(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(Exception\InvalidArgumentException::class);
         new Page(-1, 1);
     }
 
@@ -26,7 +25,7 @@ class PageTest extends TestCase
      */
     public function testInvalidCount(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(Exception\InvalidArgumentException::class);
         new Page(1, -1);
     }
 

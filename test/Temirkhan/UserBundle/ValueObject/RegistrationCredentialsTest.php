@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Temirkhan\UserBundle\ValueObject;
 
@@ -22,6 +22,7 @@ class RegistrationCredentialsTest extends TestCase
 
         $this->assertEquals($login, $credentials->getLogin());
     }
+
 
     /**
      * Проверка пароля

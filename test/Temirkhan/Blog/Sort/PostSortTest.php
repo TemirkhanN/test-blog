@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Temirkhan\Blog\Sort;
 
 use PHPUnit\Framework\TestCase;
-use Temirkhan\Blog\Sort\Exception\InvalidArgumentException;
 
 /**
  * Тесты класса сортировки постов
@@ -27,7 +26,7 @@ class PostSortTest extends TestCase
      */
     public function testBehaviorForInvalidDirection(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(Exception\InvalidArgumentException::class);
 
         new PostSort([
             'add_date' => 'invalid sort'
