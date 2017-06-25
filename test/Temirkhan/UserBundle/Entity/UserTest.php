@@ -13,29 +13,46 @@ use PHPUnit\Framework\TestCase;
 class UserTest extends TestCase
 {
     /**
+     * Сущьность пользователя
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
+     * Установка окружения
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = new User();
+    }
+
+    /**
+     * Очистка окружения
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->user = null;
+    }
+
+    /**
      * Проверка ID пользователя
      */
     public function testId(): void
     {
-        $user = new User();
-
-        $this->assertEquals(0, $user->getId());
+        $this->assertEquals(0, $this->user->getId());
     }
     /**
      * Проверка даты регистрации
      */
     public function testDateReg(): void
     {
-        $date = new DateTime('2017-06-25 12:38:27');
-
-        $user = new User();
-
-        $this->assertEquals(
-            (new DateTime())->format('Y-m-d'),
-            $user->getRegDate()->format('Y-m-d')
-        );
-
-        $user->setRegDate($date);
+        $date = new DateTime();
+        $user = new User($date);
 
         $this->assertEquals($date, $user->getRegDate());
     }
@@ -46,13 +63,12 @@ class UserTest extends TestCase
     public function testLogin(): void
     {
         $login = 'some login';
-        $user  = new User();
 
-        $this->assertEmpty($user->getLogin());
+        $this->assertEmpty($this->user->getLogin());
 
-        $user->setLogin($login);
+        $this->user->setLogin($login);
 
-        $this->assertEquals($login, $user->getLogin());
+        $this->assertEquals($login, $this->user->getLogin());
     }
 
     /**
@@ -61,13 +77,12 @@ class UserTest extends TestCase
     public function testUserName(): void
     {
         $login = 'some login';
-        $user  = new User();
 
-        $this->assertEmpty($user->getUsername());
+        $this->assertEmpty($this->user->getUsername());
 
-        $user->setLogin($login);
+        $this->user->setLogin($login);
 
-        $this->assertEquals($login, $user->getUsername());
+        $this->assertEquals($login, $this->user->getUsername());
     }
 
     /**
@@ -76,13 +91,12 @@ class UserTest extends TestCase
     public function testPassword(): void
     {
         $password = 'some pwd';
-        $user     = new User();
 
-        $this->assertEmpty($user->getPassword());
+        $this->assertEmpty($this->user->getPassword());
 
-        $user->setPassword($password);
+        $this->user->setPassword($password);
 
-        $this->assertEquals($password, $user->getPassword());
+        $this->assertEquals($password, $this->user->getPassword());
     }
 
     /**
@@ -91,21 +105,18 @@ class UserTest extends TestCase
     public function testRoles(): void
     {
         $role = 'Some Role';
-        $user = new User();
 
-        $this->assertEquals([], $user->getRoles());
+        $this->user->addRole($role);
 
-        $user->addRole($role);
+        $this->assertContains($role, $this->user->getRoles());
 
-        $this->assertNull($user->addRole($role));
+        $this->user->addRole($role);
 
-        $this->assertEquals([ $role ], $user->getRoles());
+        $this->assertCount(count($this->user->getRoles()), array_unique($this->user->getRoles()));
 
-        $user->removeRole($role);
+        $this->user->removeRole($role);
 
-        $this->assertNull($user->removeRole($role));
-
-        $this->assertEquals([], $user->getRoles());
+        $this->assertNotContains($role, $this->user->getRoles());
     }
 
     /**
@@ -113,8 +124,6 @@ class UserTest extends TestCase
      */
     public function testEraseCredentials(): void
     {
-        $user = new User();
-
-        $this->assertNull($user->eraseCredentials());
+        $this->assertNull($this->user->eraseCredentials());
     }
 }
