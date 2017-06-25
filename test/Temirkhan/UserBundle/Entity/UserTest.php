@@ -13,6 +13,15 @@ use PHPUnit\Framework\TestCase;
 class UserTest extends TestCase
 {
     /**
+     * Проверка ID пользователя
+     */
+    public function testId(): void
+    {
+        $user = new User();
+
+        $this->assertEquals(0, $user->getId());
+    }
+    /**
      * Проверка даты регистрации
      */
     public function testDateReg(): void
@@ -88,10 +97,24 @@ class UserTest extends TestCase
 
         $user->addRole($role);
 
+        $this->assertNull($user->addRole($role));
+
         $this->assertEquals([ $role ], $user->getRoles());
 
         $user->removeRole($role);
 
+        $this->assertNull($user->removeRole($role));
+
         $this->assertEquals([], $user->getRoles());
+    }
+
+    /**
+     * Проверка очистки учетных данных пользователя
+     */
+    public function testEraseCredentials(): void
+    {
+        $user = new User();
+
+        $this->assertNull($user->eraseCredentials());
     }
 }
