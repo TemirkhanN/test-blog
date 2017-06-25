@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Temirkhan\UserBundle\ValueObject;
 
 use PHPUnit\Framework\TestCase;

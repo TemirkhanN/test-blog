@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ser
- * Date: 23.06.17
- * Time: 1:46
- */
+
+declare(strict_types=1);
 
 namespace Temirkhan\Blog\Sort;
 
