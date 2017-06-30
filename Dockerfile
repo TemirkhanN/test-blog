@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     libcurl4-gnutls-dev \
     libpq-dev \
-    libicu-dev
+    libicu-dev \
+    postgresql
 
 RUN docker-php-ext-install \
     intl \
@@ -28,5 +29,4 @@ WORKDIR /var/www/html
 
 COPY . ./
 
-RUN composer install --prefer-source --no-interaction ; \
-    chown -R www-data:www-data /var/www/html
+RUN composer install --no-interaction

@@ -5,8 +5,8 @@ parameters:
     database_host:     db
     database_port:     5432
     database_name:     blog_db
-    database_user:     blog
-    database_password: some_pass
+    database_user:     blog_user
+    database_password: blog_pass
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 

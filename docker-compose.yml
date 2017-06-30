@@ -1,17 +1,11 @@
 version: '2'
 services:
-  db:
-    image: sameersbn/postgresql
-    environment:
-      - DB_USER=blog
-      - DB_PASS=some_pass
-      - DB_NAME=blog_db
   frontend:
     image: nginx:alpine
     volumes:
       - ./:/var/www/html
     ports:
-      - "81:80"
+      - "80:80"
     links:
       - backend
     depends_on:
@@ -25,4 +19,10 @@ services:
       - db
     depends_on:
       - db
-    command: sh -c "chmod +x ./docker/wait-for-it.sh && ./docker/wait-for-it.sh"
+    command: sh -c "chmod +x ./docker/init.sh && ./docker/init.sh"
+  db:
+    image: sameersbn/postgresql
+    environment:
+      - DB_USER=blog_user
+      - DB_PASS=blog_pass
+      - DB_NAME=blog_db
