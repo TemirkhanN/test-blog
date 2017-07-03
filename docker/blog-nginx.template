@@ -23,6 +23,4 @@ server {
       return 404;
     }
 
-    error_log /var/www/html/var/logs/nginx/error.log;
-    access_log /var/www/html/var/logs/nginx/access.log;
 }

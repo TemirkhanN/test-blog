@@ -2,8 +2,8 @@ version: '2'
 services:
   frontend:
     image: nginx:alpine
-    volumes:
-      - ./:/var/www/html
+    volumes_from:
+      - backend
     ports:
       - "80:80"
     links:
