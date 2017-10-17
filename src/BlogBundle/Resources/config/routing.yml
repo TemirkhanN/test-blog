@@ -1,65 +1,77 @@
-#Страница решистрации
-blog_register:
+# Страница регистрации
+blog.register:
     path: /registration
-    defaults: { _controller: blog.controller.author.register:execute }
+    defaults:
+        _controller: blog.controller.author.register:execute
 
 # Страница входа
 blog.login:
     path: /login
-    defaults: { _controller: blog.controller.auth.login:execute }
+    defaults:
+        _controller: blog.controller.auth.login:execute
 
-#Основая страница блога со списком публикаций
-blog_posts:
+# Основая страница блога со списком публикаций
+blog.posts:
     path: /{page}
-    defaults: { _controller: blog.controller.post.list:execute, page: 1 }
+    defaults:
+        _controller: blog.controller.post.list:execute
+        page: 1
     requirements:
         page: '[1-9][0-9]*'
 
-#Страница с публикациями автора
-author_posts:
+# Страница с публикациями автора
+blog.posts.author.view:
     path: /authors/{author}/{page}
-    defaults: { _controller: blog.controller.author.post_list:execute, page: 1}
+    defaults:
+        _controller: blog.controller.author.post_list:execute
+        page: 1
     requirements:
         page:   '[1-9][0-9]*'
         author: '[1-9][0-9]*'
 
-#Страница с публикацией
-blog_post:
+# Страница с публикацией
+blog.posts.view:
     path: /posts/{post}
-    defaults: { _controller: blog.controller.post.view:execute }
+    defaults:
+        _controller: blog.controller.post.view:execute
     requirements:
         post: '[1-9][0-9]*'
 
-#Страница добавления публикации
-add_post:
+# Страница добавления публикации
+blog.posts.create:
     path: /posts/add
-    defaults: { _controller: blog.controller.post.create:execute }
+    defaults:
+        _controller: blog.controller.post.create:execute
     methods: [POST, GET]
 
-#Страница редактирования публикации
-edit_post:
+# Страница редактирования публикации
+blog.posts.edit:
     path: /posts/{postId}/edit
-    defaults: { _controller: blog_bundle.controller.post:updateContentAction }
+    defaults:
+        _controller: blog_bundle.controller.post:updateContentAction
     requirements:
         postId: '[1-9][0-9]*'
 
-#Страница выноса публикаций из черновиков в опубликованные
-publish_post:
+# Страница выноса публикаций из черновиков в опубликованные
+blog.posts.publish:
     path: /posts/{postId}/publish
-    defaults: { _controller: blog_bundle.controller.post:publishContentAction }
+    defaults:
+        _controller: blog_bundle.controller.post:publishContentAction
     requirements:
         postId: '[1-9][0-9]*'
 
-#Страница удаления публикации
-delete_post:
+# Страница удаления публикации
+blog.posts.delete:
     path: /posts/{postId}/delete
-    defaults: { _controller: blog_bundle.controller.post:deleteContentAction }
+    defaults:
+        _controller: blog_bundle.controller.post:deleteContentAction
     requirements:
         postId: '[1-9][0-9]*'
 
-#Страница добавления комментария к публикации
-add_comment:
+# Cтраница добавления комментария к публикации
+blog.posts.comments.add:
     path: /posts/{postId}/comment/add
-    defaults: { _controller: BlogBundle:Comment:createComment }
+    defaults:
+        _controller: BlogBundle:Comment:createComment
     requirements:
         postId: '[1-9][0-9]*'
