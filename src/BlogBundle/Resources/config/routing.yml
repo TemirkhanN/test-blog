@@ -20,7 +20,7 @@ blog.posts:
         page: '[1-9][0-9]*'
 
 # Страница с публикациями автора
-blog.posts.author.view:
+blog.author.posts.view:
     path: /authors/{author}/{page}
     defaults:
         _controller: blog.controller.author.post_list:execute
