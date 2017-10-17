@@ -14,7 +14,7 @@ class LoginCredentialsTest extends TestCase
     /**
      * Проверка логина
      */
-    public function testLogin()
+    public function testLogin(): void
     {
         $login = 'some login';
 
@@ -26,7 +26,7 @@ class LoginCredentialsTest extends TestCase
     /**
      * Проверка пароля
      */
-    public function testPassword()
+    public function testPassword(): void
     {
         $password = 'some pwd';
 

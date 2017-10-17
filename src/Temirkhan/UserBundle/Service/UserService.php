@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Temirkhan\UserBundle\Service;
 
+use DateTime;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Temirkhan\UserBundle\Entity\User;
 use Temirkhan\UserBundle\Repository\UserRepository;
@@ -49,7 +50,7 @@ class UserService
      */
     public function registerUser(RegistrationCredentials $credentials): User
     {
-        $user = new User();
+        $user = new User(new DateTime());
 
         $password = $this->passwordEncoder
             ->getEncoder($user)

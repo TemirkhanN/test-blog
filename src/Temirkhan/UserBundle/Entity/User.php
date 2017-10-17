@@ -78,10 +78,14 @@ class User implements UserInterface
 
     /**
      * Конструктор
+     *
+     * @param DateTime $regDate
      */
-    public function __construct()
+    public function __construct(DateTime $regDate = null)
     {
-        $this->regDate = new DateTime();
+        if ($regDate) {
+            $this->regDate = clone $regDate;
+        }
     }
 
     /**
@@ -109,7 +113,7 @@ class User implements UserInterface
      *
      * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getLogin();
     }
@@ -119,7 +123,7 @@ class User implements UserInterface
      *
      * @param string $login
      */
-    public function setLogin(string $login)
+    public function setLogin(string $login): void
     {
         $this->login = $login;
     }
@@ -155,16 +159,6 @@ class User implements UserInterface
     }
 
     /**
-     * Устанавливает дату регистрации
-     *
-     * @param DateTime $regDate
-     */
-    public function setRegDate(DateTime $regDate)
-    {
-        $this->regDate = clone $regDate;
-    }
-
-    /**
      * Возвращает соль
      *
      * @return null
@@ -179,7 +173,7 @@ class User implements UserInterface
      *
      * @return array
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
@@ -189,9 +183,9 @@ class User implements UserInterface
      *
      * @param string $role
      */
-    public function addRole(string $role)
+    public function addRole(string $role): void
     {
-        if (in_array($role, $this->roles)) {
+        if (in_array($role, $this->roles, true)) {
             return;
         }
 
@@ -203,7 +197,7 @@ class User implements UserInterface
      *
      * @param string $role
      */
-    public function removeRole(string $role)
+    public function removeRole(string $role): void
     {
         $roles = array_flip($this->roles);
 
@@ -219,7 +213,7 @@ class User implements UserInterface
     /**
      * Вычищает уязвимые данные
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }
