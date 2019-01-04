@@ -36,7 +36,7 @@
                         <div class="post-teaser">
                             {{ post.teaser }}
                         </div>
-                        <p><a href="{{ path('blog_post', {'post' : post.id}) }}">Читать</a></p>
+                        <p><a href="{{ path('blog.posts.view', {'post' : post.id}) }}">Читать</a></p>
                     </div>
                     {% if post.status != constant('BlogBundle\\Entity\\Post::STATUS_PUBLISHED') %}
                         <a href=""></a>

@@ -70,7 +70,7 @@ class LoginController extends AbstractController
             try {
                 $this->authService->authenticate($loginForm->getData());
 
-                return $this->respondRedirect($this->router->generate('blog_posts'));
+                return $this->respondRedirect($this->router->generate('blog.posts'));
             } catch (AuthenticationException $e) {
                 $this->addFlashError('Пользователь с такими данными не существует');
             }
