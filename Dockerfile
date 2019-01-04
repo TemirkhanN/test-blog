@@ -10,8 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     libcurl4-gnutls-dev \
     libpq-dev \
-    libicu-dev \
-    postgresql
+    libicu-dev
 
 RUN docker-php-ext-install \
     intl \
@@ -26,7 +25,3 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www/html
-
-COPY . ./
-
-RUN composer install --no-interaction
