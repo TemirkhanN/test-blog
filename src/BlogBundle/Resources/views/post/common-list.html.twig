@@ -40,7 +40,7 @@
                 {% for post in posts %}
                     <div class="col-lg-12 post-block">
                         <span class="pub-date">{{ post.pubDate|date('H:i:s d-m-Y') }}</span>
-                        <a class="author" href="{{ path('author_posts', {'author': post.author.id}) }}" title="Опубликовал {{ post.author.name }}">{{ post.author.name }}</a>
+                        <a class="author" href="{{ path('blog.author.posts.view', {'author': post.author.id}) }}" title="Опубликовал {{ post.author.name }}">{{ post.author.name }}</a>
 
                         <p class="post-title">{{ post.title }}</p>
                         <div class="post-teaser">
