@@ -1,6 +1,6 @@
 parameters:
     default_post_sort:
-        pub_date: !php/const:Temirkhan\Blog\Sort\PostSort::SORT_ASC
+        pub_date: php/const:Temirkhan\Blog\Sort\PostSort::SORT_ASC
 services:
     # Конвертер фильтра публикаций
     blog.paramconverter.post_filter:

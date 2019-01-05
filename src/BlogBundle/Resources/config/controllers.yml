@@ -1,6 +1,7 @@
 services:
     # Контроллер аутентификации
     blog.controller.auth.login:
+        public: true
         class: BlogBundle\Controller\Auth\LoginController
         arguments:
             - '@templating'
@@ -17,6 +18,7 @@ services:
 
     # Контроллер регистрации
     blog.controller.author.register:
+        public: true
         class: BlogBundle\Controller\Author\RegisterController
         arguments:
             - '@templating'
@@ -28,6 +30,7 @@ services:
 
     # Контроллер списка публикаций
     blog.controller.author.post_list:
+        public: true
         class: BlogBundle\Controller\Author\PostListController
         arguments:
             - '@templating'
@@ -35,6 +38,7 @@ services:
 
     # Контроллер создания публикаций
     blog.controller.post.create:
+        public: true
         class: BlogBundle\Controller\Post\CreateController
         arguments:
             - '@templating'
@@ -46,12 +50,14 @@ services:
 
     # Контроллер просмотра публикации
     blog.controller.post.view:
+        public: true
         class: BlogBundle\Controller\Post\ViewController
         arguments:
             - '@templating'
 
     # Контроллер списка публикаций
     blog.controller.post.list:
+        public: true
         class: BlogBundle\Controller\Post\ListController
         arguments:
             - '@templating'
