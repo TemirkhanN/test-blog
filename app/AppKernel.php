@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new BlogBundle\BlogBundle(),
             new Temirkhan\UserBundle\UserBundle(),
+            new Temirkhan\FlushListenerBundle\TemirkhanFlushListenerBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
