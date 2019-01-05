@@ -76,7 +76,7 @@ class CreateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $this->postService->addPost($form->getData());
 
-            return $this->respondRedirect($this->router->generate('blog.post', ['post' => $post->getId()]));
+            return $this->respondRedirect($this->router->generate('blog.posts.view', ['post' => $post->getId()]));
         }
 
         return $this->respond('@Blog/post/item-form.html.twig', ['postForm' => $form->createView()]);
