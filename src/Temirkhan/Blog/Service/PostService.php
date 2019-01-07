@@ -58,8 +58,6 @@ class PostService implements PostServiceInterface
      */
     public function getPosts(Page $pageFilter, PostFilter $filter, PostSort $postSort = null): array
     {
-        $filter->setStatus(PostInterface::STATUS_PUBLISHED);
-
         return $this->postRepository->getList($pageFilter, $filter, $postSort);
     }
 

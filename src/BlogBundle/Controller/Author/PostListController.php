@@ -9,6 +9,7 @@ use BlogBundle\Entity\Author;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Temirkhan\Blog\Entity\PostInterface;
 use Temirkhan\Blog\Filter\Page;
 use Temirkhan\Blog\Filter\PostFilter;
 use Temirkhan\Blog\Service\PostServiceInterface;
@@ -46,6 +47,7 @@ class PostListController extends AbstractController
      * @param Page          $page
      * @param PostFilter    $postFilter
      * @param PostSort|null $postSort
+     * @param Author|null   $currentAuthor
      *
      * @return Response
      *
@@ -57,8 +59,13 @@ class PostListController extends AbstractController
         Author $author,
         Page $page,
         PostFilter $postFilter,
-        PostSort $postSort = null
+        PostSort $postSort = null,
+        Author $currentAuthor = null
     ): Response {
+        if ($currentAuthor && $currentAuthor->getId() === $author->getId()) {
+            $postFilter->setStatus(null);
+        }
+
         $posts = $this->postService->getAuthorPosts($author, $page, $postFilter, $postSort);
         $total = $this->postService->getAuthorPostsCount($author, $postFilter);
 

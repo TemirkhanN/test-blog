@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Temirkhan\Blog\Filter;
 
+use Temirkhan\Blog\Entity\PostInterface;
+
 /**
  * Фильтр публикаций
  */
@@ -30,10 +32,11 @@ class PostFilter
      */
     public function __construct(array $filter)
     {
+        $this->status = PostInterface::STATUS_PUBLISHED;
+
         if (!isset($filter['author'])) {
             return;
         }
-
         $this->author = (int) $filter['author'];
     }
 
