@@ -11,4 +11,5 @@ return [
     BlogBundle\BlogBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+    Temirkhan\FlushListenerBundle\TemirkhanFlushListenerBundle::class => ['all' => true],
 ];
