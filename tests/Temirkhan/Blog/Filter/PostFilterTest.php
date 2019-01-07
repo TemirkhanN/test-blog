@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Temirkhan\Blog\Filter;
 
 use PHPUnit\Framework\TestCase;
+use Temirkhan\Blog\Entity\PostInterface;
 
 /**
  * Тест фильтра публикаций
@@ -60,7 +61,7 @@ class PostFilterTest extends TestCase
 
         $post = new PostFilter([]);
 
-        $this->assertEquals(null, $post->getStatus());
+        $this->assertEquals(PostInterface::STATUS_PUBLISHED, $post->getStatus());
 
         $post->setStatus($status);
 
