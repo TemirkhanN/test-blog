@@ -1,3 +1,0 @@
-imports:
-    - { resource: "@BlogBundle/Resources/config/services.yml" }
-    - { resource: "@UserBundle/Resources/config/services.yml" }

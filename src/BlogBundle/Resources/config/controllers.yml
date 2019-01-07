@@ -10,12 +10,6 @@ services:
         calls:
             - { method: setRouter, arguments: ['@router'] }
 
-    # Контроллер выхода из системы
-    blog.controller.auth.logout:
-        class: BlogBundle\Controller\Auth\LogoutController
-        arguments:
-            - '@templating'
-
     # Контроллер регистрации
     blog.controller.author.register:
         public: true

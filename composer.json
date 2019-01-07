@@ -7,18 +7,16 @@
             "": "src/"
         },
         "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
+            "src/Kernel.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "": "test/"
+            "": "tests/"
         }
     },
     "require": {
         "php": ">=7.0",
-        "symfony/symfony": "^4.2",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -26,7 +24,14 @@
         "symfony/polyfill-apcu": "*",
         "incenteev/composer-parameter-handler": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
-        "sensio/framework-extra-bundle": "^5.2"
+        "sensio/framework-extra-bundle": "^5.2",
+        "symfony/flex": "^1.0",
+        "symfony/templating": "^4.2",
+        "symfony/twig-bundle": "^4.2",
+        "symfony/security-bundle": "^4.2",
+        "symfony/form": "^4.2",
+        "symfony/expression-language": "^4.2",
+        "symfony/validator": "^4.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
@@ -34,26 +39,13 @@
         "symfony/phpunit-bridge": "*",
         "satooshi/php-coveralls": "^1.0"
     },
-    "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ]
+    "conflict": {
+        "symfony/symfony": "*"
     },
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }

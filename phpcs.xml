@@ -123,4 +123,5 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
     <file>src</file>
     <file>test</file>
+    <exclude-pattern>src/(Migrations/|Kernel)</exclude-pattern>
 </ruleset>
