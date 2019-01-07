@@ -28,7 +28,7 @@
 
     <testsuites>
         <testsuite name="All tests">
-            <directory>test</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
